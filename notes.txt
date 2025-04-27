@@ -1,0 +1,4 @@
+import { supabase } from '@/lib/supabaseClient';
+
+await supabase.from('profiles').select('*');
+await supabase.from('profiles').upsert(...);
