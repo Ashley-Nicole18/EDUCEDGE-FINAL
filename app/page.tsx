@@ -1,4 +1,5 @@
 import Image from "next/image";
+import HoverSidebar from "../components/HoverSidebar";
 
 export default function Home() {
   return (
@@ -8,8 +9,10 @@ export default function Home() {
           src="/img/EDUCEDGE.png"
           alt="EducEdge_logo"
           width={500}
-          height={300}
+          height={500}
         />
+        <HoverSidebar />
+        {}
       </main>
     </div>
   );
