@@ -69,7 +69,6 @@ const ProfileTutee: React.FC = () => {
           />
         </div>
       </div>
-
      
       <button className="absolute bottom-13 right-15 bg-blue-500 text-white py-1 px-5 rounded hover:bg-blue-700">
         Submit
