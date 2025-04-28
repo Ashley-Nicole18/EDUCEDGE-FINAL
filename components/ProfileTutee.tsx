@@ -58,7 +58,7 @@ const ProfileTutee: React.FC = () => {
             placeholder="Enter course and year"
           />
         </div>
-
+        
         <div>
           <label className="block text-black text-xs mb-1">School Email</label>
           <input
