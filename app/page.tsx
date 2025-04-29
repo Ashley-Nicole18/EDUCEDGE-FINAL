@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from "next/image";
-import HoverSidebar from "../components/HoverSidebar";
+import HoverSidebar from "../components/StaticSidebar";
 
 const page = () => {
   return (
