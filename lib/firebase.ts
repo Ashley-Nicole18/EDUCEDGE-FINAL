@@ -1,7 +1,7 @@
+'use client';
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -10,6 +10,7 @@ import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyAi0MgQA4Q6oQcTWh3kDglqAq6d-iTAz-w",
   authDomain: "educedge-29d72.firebaseapp.com",
+  databaseURL: "https://educedge-29d72-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "educedge-29d72",
   storageBucket: "educedge-29d72.firebasestorage.app",
   messagingSenderId: "144520835528",
@@ -17,6 +18,10 @@ const firebaseConfig = {
   measurementId: "G-WFGSBT22FK"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+// Initialize Firebase only once
+const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+
+// Firestore DB instance
+const db = getFirestore(app);
+
+export { db };
