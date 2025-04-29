@@ -2,7 +2,9 @@ import React from "react";
 
 const ProfileTutee: React.FC = () => {
   return (
+
     <div className="relative h-full p-13">
+
       <div className="flex items-center mb-1 ml-25">
         <div className="w-20 h-20 bg-gray-300 rounded-full mr-10 flex items-center justify-center">
           <span className="text-black text-2xl">+</span>
@@ -58,21 +60,22 @@ const ProfileTutee: React.FC = () => {
             placeholder="Enter course and year"
           />
         </div>
-        
+    
         <div>
           <label className="block text-black text-xs mb-1">School Email</label>
           <input
             type="email"
             className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-full"
             placeholder="Enter school email"
-            required
+            required 
           />
         </div>
       </div>
-     
+
       <button className="absolute bottom-13 right-15 bg-blue-500 text-white py-1 px-5 rounded hover:bg-blue-700">
         Submit
       </button>
+      
     </div>
   );
 };
