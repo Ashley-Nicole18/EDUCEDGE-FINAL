@@ -1,51 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-
-export default function HoverSidebar() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleMouseEnter = () => {
-    setIsOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsOpen(false);
-  };
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      const sidebar = document.getElementById('sidebar');
-      const sidebarRect = sidebar.getBoundingClientRect();
-      if (e.clientX < sidebarRect.right + 60) {
-        setIsOpen(true);
-      } else {
-        setIsOpen(false);
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
-
+export default function StaticSidebar() {
   return (
     <div
       id="sidebar"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       style={{
         position: "fixed",
         top: 0,
-        left: isOpen ? 0 : -150,
+        left: 0, 
         height: "100vh",
         width: "250px",
         background: "#4a6ea9",
         padding: "1rem",
         color: "white",
-        transition: "left 0.3s ease",
         zIndex: 1000,
       }}
     >
