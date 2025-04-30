@@ -1,3 +1,5 @@
+//  For inputing information
+
 "use client";
 import { useState, useEffect } from "react";
 import { db } from "@/lib/firebase";
@@ -5,6 +7,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 
 interface Lesson {
   name: string;
+  price: number;
 }
 
 interface Course {
@@ -14,7 +17,7 @@ interface Course {
 
 const CourseForm: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([
-    { name: "", lessons: [{ name: "" }] },
+    { name: "", lessons: [{ name: "", price: 0 }] },
   ]);
   const [userId] = useState("user123");
 
@@ -23,17 +26,36 @@ const CourseForm: React.FC = () => {
     const fetchData = async () => {
       const docRef = doc(db, "user_courses", userId);
       const docSnap = await getDoc(docRef);
-
+  
       if (docSnap.exists()) {
-        setCourses(docSnap.data().courses);
+        const rawCourses = docSnap.data().courses as Course[];
+        const normalizedCourses: Course[] = rawCourses.map((course) => ({
+          ...course,
+          lessons: course.lessons.map((lesson) => ({
+            ...lesson,
+            price: lesson.price ?? 0, // default to 0 if undefined
+          })),
+        }));
+        setCourses(normalizedCourses);
       }
     };
     fetchData();
   }, [userId]);
+  
 
   const handleCourseChange = (index: number, value: string) => {
     const updated = [...courses];
     updated[index].name = value;
+    setCourses(updated);
+  };
+
+  const handleLessonPriceChange = (
+    courseIndex: number,
+    lessonIndex: number,
+    value: number
+  ) => {
+    const updated = [...courses];
+    updated[courseIndex].lessons[lessonIndex].price = value;
     setCourses(updated);
   };
 
@@ -48,7 +70,7 @@ const CourseForm: React.FC = () => {
   };
 
   const addCourse = () => {
-    setCourses([...courses, { name: "", lessons: [{ name: "" }] }]);
+    setCourses([...courses, { name: "", lessons: [{ name: "", price: 0 }] }]);
   };
 
   const removeCourse = (index: number) => {
@@ -58,7 +80,7 @@ const CourseForm: React.FC = () => {
 
   const addLesson = (courseIndex: number) => {
     const updated = [...courses];
-    updated[courseIndex].lessons.push({ name: "" });
+    updated[courseIndex].lessons.push({ name: "", price: 0 });
     setCourses(updated);
   };
 
@@ -126,10 +148,22 @@ const CourseForm: React.FC = () => {
                     onChange={(e) =>
                       handleLessonChange(courseIndex, lessonIndex, e.target.value)
                     }
-                    className="w-full border-2 px-3 py-2 rounded text-gray-700"
+                    className="w-1/2 border-2 px-3 py-2 rounded text-gray-700"
                     placeholder={`Lesson ${lessonIndex + 1}`}
                     required
                   />
+                  <input 
+                    type="number"
+                    min="0"
+                    step="any"
+                    value={lesson.price}
+                    onChange={(e) => 
+                      handleLessonPriceChange(courseIndex, lessonIndex, parseFloat(e.target.value) || 0)
+                    }
+                    className="w-1/3 border-2 px-3 py-2 rounded text-gray-700 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    placeholder="Price"
+                    required
+                    />
                   {course.lessons.length > 1 && (
                     <button
                       type="button"
@@ -176,5 +210,3 @@ const CourseForm: React.FC = () => {
 };
 
 export default CourseForm;
-
-
