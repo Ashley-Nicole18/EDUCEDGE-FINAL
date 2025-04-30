@@ -1,8 +1,11 @@
+'use client';
+
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 
-export default function Home() {
+export default function LandingPage() {
   const router = useRouter();
+
   return (
     <div className="min-h-screen font-sans flex flex-col relative overflow-auto">
       {/* Enhanced Background with Parallax Effect */}
@@ -41,7 +44,7 @@ export default function Home() {
         {/* Hero Section with Floating Animation */}
         <section className="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-8 sm:p-12 max-w-2xl w-full text-center transform hover:scale-[1.01] transition-all duration-500">
           <div className="animate-float">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent">
+            <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 mb-6 bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent">
               Transform Your Learning Experience
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 mb-8">
