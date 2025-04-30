@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ProfileTutor from "../components/ProfileTutor";
+import UpperText from "@/components/UpperText";
 
 export default function Home() {
   return (
@@ -13,7 +14,6 @@ export default function Home() {
         className="absolute inset-0 z-0"
       />
 
-      
       <div className="absolute top-0 left-5 z-20 p-2">
         <Image
           src="/img/logow.PNG"
@@ -23,12 +23,15 @@ export default function Home() {
         />
       </div>
 
-      
-      <main className="absolute inset-0 z-0 left-40 flex flex-col items-center justify-center p-8 text-white">
-        <div className="bg-white rounded shadow-lg px-30 p-30 w-full max-w-6xl text-black">
+      <main className="absolute inset-0 z-10 left-40 flex flex-col items-center justify-center p-8 text-white">
+        <div className="bg-white rounded shadow-lg px-20 p-30 w-full max-w-6xl text-black">
           <ProfileTutor />
         </div>
       </main>
+
+      <div className="absolute inset-0 px-40 flex flex-col items-center justify-center">
+        <UpperText/>
+      </div>
     </div>
   );
 }
