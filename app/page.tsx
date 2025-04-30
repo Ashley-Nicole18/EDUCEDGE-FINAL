@@ -1,4 +1,10 @@
+
 'use client';
+
+import Image from "next/image";
+import ProfileTutor from "../components/ProfileTutor";
+import UpperText from "@/components/UpperText";
+
 
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
@@ -6,6 +12,7 @@ import { useRouter } from 'next/navigation';
 export default function LandingPage() {
   const router = useRouter();
   return (
+
     <div className="min-h-screen font-sans flex flex-col relative overflow-auto">
       {/* Enhanced Background with Parallax Effect */}
       <div className="fixed inset-0 -z-10">
@@ -251,6 +258,35 @@ export default function LandingPage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
         </button>
+
+    <div className="relative w-screen h-screen overflow-hidden">
+      
+      <Image
+        src="/img/Background.png"
+        alt="Test image"
+        layout="fill"
+        objectFit="cover"
+        className="absolute inset-0 z-0"
+      />
+
+      <div className="absolute top-0 left-5 z-20 p-2">
+        <Image
+          src="/img/logow.PNG"
+          alt="logowhite"
+          width={144} 
+          height={50} 
+        />
+      </div>
+
+      <main className="absolute inset-0 z-10 left-40 flex flex-col items-center justify-center p-8 text-white">
+        <div className="bg-white rounded shadow-lg px-20 p-30 w-full max-w-6xl text-black">
+          <ProfileTutor />
+        </div>
+      </main>
+
+      <div className="absolute inset-0 px-40 flex flex-col items-center justify-center">
+        <UpperText/>
+
       </div>
     </div>
   );
