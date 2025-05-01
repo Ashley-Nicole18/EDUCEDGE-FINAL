@@ -84,7 +84,7 @@ export default function LandingPage() {
         </section>
       </main>
 
-      {/* Profile Section */}
+      {/* Profile Section
       <section className="relative w-full h-screen overflow-hidden z-10">
         <Image
           src="/img/Background.png"
@@ -108,7 +108,7 @@ export default function LandingPage() {
             <ProfileTutor />
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Footer */}
       <footer className="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-12 w-full z-10">
@@ -126,7 +126,7 @@ export default function LandingPage() {
         </div>
       </footer>
 
-      {/* Floating Button */}
+      Floating Button
       <div className="fixed bottom-6 right-6 z-50">
         <button
           title="Book a Tutor"
