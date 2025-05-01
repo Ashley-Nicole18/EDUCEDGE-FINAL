@@ -59,7 +59,7 @@ const ProfileTutor: React.FC = () => {
       <Sidebar />
       <div className="p-17 px-10 max-w-7xl mx-auto w-full">
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Navigation Section */}
+          
           <div className="absolute top-6 left-0 right-200 flex justify-center space-x-10 items-center">
             <Link href="/Information">
               <p className="text-based text-black hover:text-orange-500 transition-all duration-300 cursor-pointer">
@@ -78,7 +78,7 @@ const ProfileTutor: React.FC = () => {
             </Link>
           </div>
 
-          {/* Profile Picture Section */}
+          
           <div className="flex items-center space-x-6">
             <div className="w-30 h-30 rounded-full overflow-hidden border border-gray-300 flex items-center justify-center bg-gray-100">
               <img
@@ -103,7 +103,7 @@ const ProfileTutor: React.FC = () => {
             </div>
           </div>
 
-          {/* Personal Information Section */}
+          
           <h1 className="text-black text-based whitespace-nowrap mb-1">Personal Information</h1>
           <div className="flex space-x-10">
             <div>
@@ -139,7 +139,7 @@ const ProfileTutor: React.FC = () => {
             </div>
           </div>
 
-          {/* Academic Information Section */}
+          
           <h2 className="text-black text-based font-medium mb-1">Academic Information</h2>
           <div className="flex space-x-10">
             <div>
@@ -192,7 +192,7 @@ const ProfileTutor: React.FC = () => {
             {errors.schoolEmail && <p className="text-red-600 text-xs">{errors.schoolEmail}</p>}
           </div>
 
-          {/* Achievements Section */}
+          
           <h2 className="text-black text-based font-medium mb-1">Credentials</h2>
           <div>
             <label htmlFor="achievements" className="block text-black text-xs mb-1">

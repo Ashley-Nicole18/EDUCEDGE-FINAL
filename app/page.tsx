@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import ProfileTutor from "../components/ProfileTutor";
-import UpperText from "@/components/UpperText";
+import {useRouter} from 'next/navigation';
+
 
 export default function LandingPage() {
   const router = useRouter();
@@ -83,7 +84,7 @@ export default function LandingPage() {
         </section>
       </main>
 
-      {/* Profile Section */}
+     
       <section className="relative w-full h-screen overflow-hidden z-10">
         <Image
           src="/img/Background.png"
@@ -102,11 +103,12 @@ export default function LandingPage() {
         </div>
 
         <div className="absolute inset-0 px-6 sm:px-40 flex flex-col items-center justify-center space-y-8">
-          <UpperText />
+
           <div className="bg-white rounded shadow-lg px-8 sm:px-20 py-10 w-full max-w-6xl text-black">
             <ProfileTutor />
           </div>
         </div>
+
       </section>
 
       {/* Footer */}
@@ -123,11 +125,7 @@ export default function LandingPage() {
             <p>© 2025 EducEdge. All rights reserved.</p>
           </div>
         </div>
-      </main>
-
-      <div className="absolute inset-0 px-40 flex flex-col items-center justify-center">
-        <UpperText/>
-      </div>
+      </footer>
     </div>
   );
 }
