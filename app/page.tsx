@@ -1,7 +1,6 @@
 'use client';
 
 import Image from "next/image";
-import ProfileTutor from "../components/ProfileTutor";
 import {useRouter} from 'next/navigation';
 
 
@@ -83,33 +82,6 @@ export default function LandingPage() {
           </div>
         </section>
       </main>
-
-     
-      <section className="relative w-full h-screen overflow-hidden z-10">
-        <Image
-          src="/img/Background.png"
-          alt="Test image"
-          fill
-          className="absolute inset-0 object-cover"
-        />
-
-        <div className="absolute top-0 left-5 z-20 p-2">
-          <Image
-            src="/img/logow.PNG"
-            alt="logowhite"
-            width={144}
-            height={50}
-          />
-        </div>
-
-        <div className="absolute inset-0 px-6 sm:px-40 flex flex-col items-center justify-center space-y-8">
-
-          <div className="bg-white rounded shadow-lg px-8 sm:px-20 py-10 w-full max-w-6xl text-black">
-            <ProfileTutor />
-          </div>
-        </div>
-
-      </section>
 
       {/* Footer */}
       <footer className="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-12 w-full z-10">
