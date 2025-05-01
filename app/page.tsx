@@ -1,9 +1,8 @@
 'use client';
 
 import Image from "next/image";
-import { useRouter } from 'next/navigation';
-import ProfileTutor from '../components/ProfileTutor';
-import UpperText from '@/components/UpperText';
+import ProfileTutor from "../components/ProfileTutor";
+import UpperText from "@/components/UpperText";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -124,19 +123,10 @@ export default function LandingPage() {
             <p>© 2025 EducEdge. All rights reserved.</p>
           </div>
         </div>
-      </footer>
+      </main>
 
-      {/* Floating Button */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <button
-          title="Book a Tutor"
-          onClick={handleBookingClick}
-          className="bg-blue-600 text-white p-4 rounded-full shadow-xl hover:bg-blue-700 transition-colors hover:scale-110"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
-        </button>
+      <div className="absolute inset-0 px-40 flex flex-col items-center justify-center">
+        <UpperText/>
       </div>
     </div>
   );
