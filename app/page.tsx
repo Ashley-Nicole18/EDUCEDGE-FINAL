@@ -35,11 +35,6 @@ export default function LandingPage() {
           height={70}
           className="object-contain hover:scale-105 transition-transform duration-300"
         />
-        <nav className="hidden md:flex space-x-6">
-          <a href="#features" className="text-gray-700 hover:text-blue-600 font-medium">Features</a>
-          <a href="#about" className="text-gray-700 hover:text-blue-600 font-medium">About</a>
-          <a href="#contact" className="text-gray-700 hover:text-blue-600 font-medium">Contact</a>
-        </nav>
       </header>
 
       {/* Hero Section */}
@@ -49,12 +44,6 @@ export default function LandingPage() {
           <p className="text-lg text-gray-700 max-w-xl mx-auto">
             Connect with expert tutors. Book your session easily and efficiently.
           </p>
-          <button
-            onClick={handleBookingClick}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Book a Tutor
-          </button>
         </section>
 
         <section className="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-8 sm:p-12 max-w-2xl w-full text-center transform hover:scale-[1.01] transition-all duration-500">
