@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
 import Image from "next/image";
-import { useRouter } from 'next/navigation';
-import ProfileTutor from '../components/ProfileTutor';
-import UpperText from '@/components/UpperText';
+import { useRouter } from "next/navigation";
+import ProfileTutor from "../components/ProfileTutorInfoEdit";
+import UpperText from "@/components/UpperText";
 
 export default function LandingPage() {
   const router = useRouter();
 
   const handleBookingClick = () => {
-    router.push('/booking');
+    router.push("/booking");
   };
 
   return (
@@ -26,7 +26,6 @@ export default function LandingPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/90 backdrop-blur-sm"></div>
       </div>
-
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-sm py-3 px-6 sm:px-12 flex items-center justify-between h-16 border-b border-gray-100">
         <Image
@@ -37,18 +36,35 @@ export default function LandingPage() {
           className="object-contain hover:scale-105 transition-transform duration-300"
         />
         <nav className="hidden md:flex space-x-6">
-          <a href="#features" className="text-gray-700 hover:text-blue-600 font-medium">Features</a>
-          <a href="#about" className="text-gray-700 hover:text-blue-600 font-medium">About</a>
-          <a href="#contact" className="text-gray-700 hover:text-blue-600 font-medium">Contact</a>
+          <a
+            href="#features"
+            className="text-gray-700 hover:text-blue-600 font-medium"
+          >
+            Features
+          </a>
+          <a
+            href="#about"
+            className="text-gray-700 hover:text-blue-600 font-medium"
+          >
+            About
+          </a>
+          <a
+            href="#contact"
+            className="text-gray-700 hover:text-blue-600 font-medium"
+          >
+            Contact
+          </a>
         </nav>
       </header>
-
       {/* Hero Section */}
       <main className="flex-grow pt-28 pb-16 px-6 sm:px-12 flex flex-col items-center space-y-20 z-10">
         <section className="text-center space-y-6">
-          <h1 className="text-4xl font-bold text-gray-900">Welcome to EducEdge</h1>
+          <h1 className="text-4xl font-bold text-gray-900">
+            Welcome to EducEdge
+          </h1>
           <p className="text-lg text-gray-700 max-w-xl mx-auto">
-            Connect with expert tutors. Book your session easily and efficiently.
+            Connect with expert tutors. Book your session easily and
+            efficiently.
           </p>
           <button
             onClick={handleBookingClick}
@@ -64,17 +80,18 @@ export default function LandingPage() {
               Transform Your Learning Experience
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 mb-8">
-              Personalized education tools designed to help you achieve your academic goals faster and smarter.
+              Personalized education tools designed to help you achieve your
+              academic goals faster and smarter.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
-                onClick={() => router.push('/sign-in')}
+                onClick={() => router.push("/sign-in")}
                 className="px-8 py-4 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow-lg hover:scale-105 transition-all"
               >
                 Get Started
               </button>
               <button
-                onClick={() => router.push('/sign-up')}
+                onClick={() => router.push("/sign-up")}
                 className="px-8 py-4 rounded-full border-2 border-blue-500 text-blue-600 font-semibold shadow-lg hover:scale-105 transition-all"
               >
                 Join Now
@@ -83,7 +100,6 @@ export default function LandingPage() {
           </div>
         </section>
       </main>
-
       {/* Profile Section
       <section className="relative w-full h-screen overflow-hidden z-10">
         <Image
@@ -109,23 +125,37 @@ export default function LandingPage() {
           </div>
         </div>
       </section> */}
-
       {/* Footer */}
       <footer className="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-12 w-full z-10">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* Add links/info for each footer column */}
-            <div><h3 className="text-lg font-bold mb-2">About</h3><p>EducEdge is a smart tutoring platform.</p></div>
-            <div><h3 className="text-lg font-bold mb-2">Links</h3><ul><li><a href="#features">Features</a></li></ul></div>
-            <div><h3 className="text-lg font-bold mb-2">Support</h3><p>Contact us at support@educedge.com</p></div>
-            <div><h3 className="text-lg font-bold mb-2">Social</h3><p>Follow us on social media</p></div>
+            <div>
+              <h3 className="text-lg font-bold mb-2">About</h3>
+              <p>EducEdge is a smart tutoring platform.</p>
+            </div>
+            <div>
+              <h3 className="text-lg font-bold mb-2">Links</h3>
+              <ul>
+                <li>
+                  <a href="#features">Features</a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-lg font-bold mb-2">Support</h3>
+              <p>Contact us at support@educedge.com</p>
+            </div>
+            <div>
+              <h3 className="text-lg font-bold mb-2">Social</h3>
+              <p>Follow us on social media</p>
+            </div>
           </div>
           <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
             <p>© 2025 EducEdge. All rights reserved.</p>
           </div>
         </div>
       </footer>
-
       Floating Button
       <div className="fixed bottom-6 right-6 z-50">
         <button
@@ -133,8 +163,19 @@ export default function LandingPage() {
           onClick={handleBookingClick}
           className="bg-blue-600 text-white p-4 rounded-full shadow-xl hover:bg-blue-700 transition-colors hover:scale-110"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            />
           </svg>
         </button>
       </div>

@@ -1,9 +1,9 @@
-import CourseForm from '@/components/ProfileTutorCourseEdit'
+import ReviewForm from '@/components/ReviewPageforTutee'
 import React from 'react'
 
 const page = () => {
   return (
-    <CourseForm/>
+    <ReviewForm/>
   )
 }
 

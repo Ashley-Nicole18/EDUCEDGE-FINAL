@@ -1,4 +1,4 @@
-import ProfileTutee from '@/components/ProfileTutee'
+import ProfileTutee from '@/components/ProfileTuteeInfoEdit'
 import React from 'react'
 
 const page = () => {

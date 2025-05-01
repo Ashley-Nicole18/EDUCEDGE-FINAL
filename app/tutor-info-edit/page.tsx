@@ -1,10 +1,8 @@
-import ProfileTutor from '@/components/ProfileTutor'
-import React from 'react'
+import ProfileTutor from "@/components/ProfileTutorInfoEdit";
+import React from "react";
 
 const page = () => {
-  return (
-    <ProfileTutor/>
-  )
-}
+  return <ProfileTutor />;
+};
 
-export default page
+export default page;
