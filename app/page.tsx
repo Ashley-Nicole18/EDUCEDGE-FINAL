@@ -1,6 +1,6 @@
 import Image from "next/image";
 import ProfileTutor from "../components/ProfileTutor";
-import UpperText from "@/components/UpperText";
+
 
 export default function Home() {
   return (
@@ -29,9 +29,7 @@ export default function Home() {
         </div>
       </main>
 
-      <div className="absolute inset-0 px-40 flex flex-col items-center justify-center">
-        <UpperText/>
-      </div>
+      
     </div>
   );
 }
