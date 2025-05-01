@@ -1,9 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import ProfileTutor from "../components/ProfileTutorInfoEdit";
-import UpperText from "@/components/UpperText";
+import { useRouter } from "next/navigation"; 
 
 export default function LandingPage() {
   const router = useRouter();
