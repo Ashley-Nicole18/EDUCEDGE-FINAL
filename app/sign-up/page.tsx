@@ -31,7 +31,7 @@ export default function SignUpPage() {
       setEmail('');
       setPassword('');
       setConfirmPassword('');
-      router.push('/dashboard');
+      router.push('/role-selection'); // Redirect to role selection
     } catch (e: any) {
       console.error(e);
       setError(e instanceof Error ? e.message : 'Failed to create an account. Please try again.');
@@ -45,7 +45,7 @@ export default function SignUpPage() {
     try {
       const res = await signInWithPopup(auth, provider);
       console.log({ res });
-      router.push('/dashboard');
+      router.push('/role-selection'); // Redirect to role selection
     } catch (e) {
       console.error(e);
       setError(e instanceof Error ? e.message : 'Google sign-in failed. Please try again.');
@@ -54,31 +54,23 @@ export default function SignUpPage() {
 
   return (
     <div className="relative min-h-screen">
-      {/* Full-page Background Image */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <Image
           src="/img/bg.png"
           alt="Background"
           fill
           className="object-cover"
-          style={{ 
-            filter: 'blur(0px)'
-          }}
+          style={{ filter: 'blur(0px)' }}
           priority
         />
         <div className="absolute inset-0 bg-black/20" />
       </div>
 
-      {/* Main scaling container - everything inside will scale together */}
       <div className="relative min-h-screen flex justify-end transform scale-100 origin-right">
-        {/* Right Section - Sign Up Form */}
         <div className="w-1/2 min-w-[600px]">
           <div className="h-full w-full flex items-center justify-start pl-8">
-            {/* White background container - now part of the scaling group */}
             <div className="w-[95%] min-h-[90vh] bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-12 flex flex-col justify-center my-8">
               <div className="max-w-lg mx-auto w-full space-y-10">
-                
-                {/* Larger Logo */}
                 <div className="flex justify-center">
                   <Image
                     src="/img/EDUCEDGE.png"
@@ -98,7 +90,7 @@ export default function SignUpPage() {
                       {error}
                     </div>
                   )}
-                  
+
                   <div className="space-y-6">
                     <label className="block text-2xl font-medium text-gray-700">Email</label>
                     <input
@@ -138,7 +130,9 @@ export default function SignUpPage() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className={`w-full p-6 rounded-xl text-white font-semibold text-2xl transition-all ${loading ? 'bg-[#446090]/70' : 'bg-[#446090] hover:bg-[#446090]/90 shadow-md hover:shadow-lg'}`}
+                    className={`w-full p-6 rounded-xl text-white font-semibold text-2xl transition-all ${
+                      loading ? 'bg-[#446090]/70' : 'bg-[#446090] hover:bg-[#446090]/90 shadow-md hover:shadow-lg'
+                    }`}
                   >
                     {loading ? 'Signing Up...' : 'Sign Up'}
                   </button>

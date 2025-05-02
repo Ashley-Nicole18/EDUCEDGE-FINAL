@@ -2,8 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { auth } from '@/app/firebase/config';
+import { auth, db } from '@/app/firebase/config';
 import { onAuthStateChanged } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 import Image from 'next/image';
 
 export default function SelectRole() {
@@ -19,9 +20,33 @@ export default function SelectRole() {
     return () => unsubscribe();
   }, [router]);
 
-  const handleRoleSelect = (role: 'student' | 'tutor') => {
-    router.push(`/dashboard/${role}`);
+  const handleRoleSelect = async (role: 'student' | 'tutor') => {
+    const user = auth.currentUser;
+    if (!user) {
+      alert('User not authenticated');
+      return;
+    }
+  
+    try {
+      const userRef = doc(db, 'users', user.uid);
+      const userData = {
+        role,
+        email: user.email || '',
+        uid: user.uid,
+      };
+  
+      console.log('Saving user role:', userData); // Debug log
+  
+      await setDoc(userRef, userData, { merge: true });
+  
+      console.log('User role saved successfully!');
+      router.push(`/dashboard/${role}`);
+    } catch (error) {
+      console.error('Error saving role to Firestore:', error);
+      alert('Something went wrong. Please try again.');
+    }
   };
+  
 
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden bg-gray-100">
@@ -42,8 +67,8 @@ export default function SelectRole() {
             </div>
           </div>
         </div>
-        
-        {/* Tutor Section with #16ded9 color */}
+
+        {/* Tutor Section */}
         <button
           onClick={() => handleRoleSelect('tutor')}
           onMouseEnter={() => setHoveredSide('tutor')}
@@ -69,9 +94,7 @@ export default function SelectRole() {
                 }`}
               />
             </div>
-            <h2 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">
-              Tutor
-            </h2>
+            <h2 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">Tutor</h2>
             <p className="text-xl text-white/90 mb-8 max-w-md text-center drop-shadow-md">
               Empower students with your knowledge and expertise
             </p>
@@ -87,7 +110,7 @@ export default function SelectRole() {
           </div>
         </button>
 
-        {/* Student Section with enhanced styling */}
+        {/* Student Section */}
         <button
           onClick={() => handleRoleSelect('student')}
           onMouseEnter={() => setHoveredSide('student')}
@@ -113,9 +136,7 @@ export default function SelectRole() {
                 }`}
               />
             </div>
-            <h2 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">
-              Student
-            </h2>
+            <h2 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">Student</h2>
             <p className="text-xl text-white/90 mb-8 max-w-md text-center drop-shadow-md">
               Find the perfect tutor to help you achieve your goals
             </p>

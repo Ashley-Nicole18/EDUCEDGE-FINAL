@@ -1,11 +1,9 @@
 import Image from "next/image";
-import ProfileTutor from "@/components/ProfileTutor";
-
+import ProfileTutor from "@/components/profile/ProfileTutor";
 
 export default function Home() {
   return (
     <div className="relative w-screen h-screen overflow-hidden">
-      
       <Image
         src="/img/Background.png"
         alt="Test image"
@@ -15,12 +13,7 @@ export default function Home() {
       />
 
       <div className="absolute top-0 left-5 z-20 p-2">
-        <Image
-          src="/img/logow.PNG"
-          alt="logowhite"
-          width={144} 
-          height={50} 
-        />
+        <Image src="/img/logow.PNG" alt="logowhite" width={144} height={50} />
       </div>
 
       <main className="absolute inset-0 z-10 left-40 flex flex-col items-center justify-center p-8 text-white">
@@ -28,8 +21,6 @@ export default function Home() {
           <ProfileTutor />
         </div>
       </main>
-
-      
     </div>
   );
 }

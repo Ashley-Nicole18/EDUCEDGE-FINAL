@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Sidebar from "./Sidebar";
+import Sidebar from "../Sidebar";
 import Link from "next/link";
 
 const ProfileTutor: React.FC = () => {
@@ -14,16 +14,20 @@ const ProfileTutor: React.FC = () => {
     achievements: "",
   });
   const [profilePicture, setProfilePicture] = useState<string | null>(
-    "/img/default-profile.png" 
+    "/img/default-profile.png"
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleProfilePictureUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProfilePictureUpload = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const imageUrl = URL.createObjectURL(file);
@@ -36,12 +40,15 @@ const ProfileTutor: React.FC = () => {
     if (!formData.firstName) newErrors.firstName = "First Name is required.";
     if (!formData.lastName) newErrors.lastName = "Last Name is required.";
     if (!formData.college) newErrors.college = "College is required.";
-    if (!formData.courseYear) newErrors.courseYear = "Course & Year is required.";
-    if (!formData.schoolEmail) newErrors.schoolEmail = "School Email is required.";
+    if (!formData.courseYear)
+      newErrors.courseYear = "Course & Year is required.";
+    if (!formData.schoolEmail)
+      newErrors.schoolEmail = "School Email is required.";
     else if (!/\S+@\S+\.\S+/.test(formData.schoolEmail)) {
       newErrors.schoolEmail = "Invalid email format.";
     }
-    if (!formData.achievements) newErrors.achievements = "Achievements are required.";
+    if (!formData.achievements)
+      newErrors.achievements = "Achievements are required.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -59,7 +66,6 @@ const ProfileTutor: React.FC = () => {
       <Sidebar />
       <div className="p-17 px-10 max-w-7xl mx-auto w-full">
         <form onSubmit={handleSubmit} className="space-y-6">
-          
           <div className="absolute top-6 left-0 right-200 flex justify-center space-x-10 items-center">
             <Link href="/profile-tutor">  
               <p className="text-based text-black hover:text-orange-500 transition-all duration-300 cursor-pointer">
@@ -84,7 +90,6 @@ const ProfileTutor: React.FC = () => {
             </Link>
           </div>
 
-          
           <div className="flex items-center space-x-6">
             <div className="w-30 h-30 rounded-full overflow-hidden border border-gray-300 flex items-center justify-center bg-gray-100">
               <img
@@ -96,7 +101,8 @@ const ProfileTutor: React.FC = () => {
             <div>
               <label
                 htmlFor="profilePictureUpload"
-                className="block text-sm text-blue-500 cursor-pointer">
+                className="block text-sm text-blue-500 cursor-pointer"
+              >
                 Upload Photo
               </label>
               <input
@@ -109,11 +115,15 @@ const ProfileTutor: React.FC = () => {
             </div>
           </div>
 
-          
-          <h1 className="text-black text-based whitespace-nowrap mb-1">Personal Information</h1>
+          <h1 className="text-black text-based whitespace-nowrap mb-1">
+            Personal Information
+          </h1>
           <div className="flex space-x-10">
             <div>
-              <label htmlFor="firstName" className="block text-black text-xs mb-1">
+              <label
+                htmlFor="firstName"
+                className="block text-black text-xs mb-1"
+              >
                 First Name <span className="text-red-500">*</span>
               </label>
               <input
@@ -125,11 +135,16 @@ const ProfileTutor: React.FC = () => {
                 className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-64"
                 placeholder="Enter first name"
               />
-              {errors.firstName && <p className="text-red-600 text-xs">{errors.firstName}</p>}
+              {errors.firstName && (
+                <p className="text-red-600 text-xs">{errors.firstName}</p>
+              )}
             </div>
 
             <div>
-              <label htmlFor="lastName" className="block text-black text-xs mb-1">
+              <label
+                htmlFor="lastName"
+                className="block text-black text-xs mb-1"
+              >
                 Last Name <span className="text-red-500">*</span>
               </label>
               <input
@@ -141,15 +156,21 @@ const ProfileTutor: React.FC = () => {
                 className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-64"
                 placeholder="Enter last name"
               />
-              {errors.lastName && <p className="text-red-600 text-xs">{errors.lastName}</p>}
+              {errors.lastName && (
+                <p className="text-red-600 text-xs">{errors.lastName}</p>
+              )}
             </div>
           </div>
 
-          
-          <h2 className="text-black text-based font-medium mb-1">Academic Information</h2>
+          <h2 className="text-black text-based font-medium mb-1">
+            Academic Information
+          </h2>
           <div className="flex space-x-10">
             <div>
-              <label htmlFor="college" className="block text-black text-xs mb-1">
+              <label
+                htmlFor="college"
+                className="block text-black text-xs mb-1"
+              >
                 College <span className="text-red-500">*</span>
               </label>
               <input
@@ -161,11 +182,16 @@ const ProfileTutor: React.FC = () => {
                 className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-64"
                 placeholder="Enter college name"
               />
-              {errors.college && <p className="text-red-600 text-xs">{errors.college}</p>}
+              {errors.college && (
+                <p className="text-red-600 text-xs">{errors.college}</p>
+              )}
             </div>
 
             <div>
-              <label htmlFor="courseYear" className="block text-black text-xs mb-1">
+              <label
+                htmlFor="courseYear"
+                className="block text-black text-xs mb-1"
+              >
                 Course & Year <span className="text-red-500">*</span>
               </label>
               <input
@@ -177,12 +203,17 @@ const ProfileTutor: React.FC = () => {
                 className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-64"
                 placeholder="Enter course and year"
               />
-              {errors.courseYear && <p className="text-red-600 text-xs">{errors.courseYear}</p>}
+              {errors.courseYear && (
+                <p className="text-red-600 text-xs">{errors.courseYear}</p>
+              )}
             </div>
           </div>
 
           <div>
-            <label htmlFor="schoolEmail" className="block text-black text-xs mb-1">
+            <label
+              htmlFor="schoolEmail"
+              className="block text-black text-xs mb-1"
+            >
               School Email <span className="text-red-500">*</span>
             </label>
             <input
@@ -193,15 +224,20 @@ const ProfileTutor: React.FC = () => {
               onChange={handleChange}
               className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-100"
               placeholder="Enter school email"
-
             />
-            {errors.schoolEmail && <p className="text-red-600 text-xs">{errors.schoolEmail}</p>}
+            {errors.schoolEmail && (
+              <p className="text-red-600 text-xs">{errors.schoolEmail}</p>
+            )}
           </div>
 
-          
-          <h2 className="text-black text-based font-medium mb-1">Credentials</h2>
+          <h2 className="text-black text-based font-medium mb-1">
+            Credentials
+          </h2>
           <div>
-            <label htmlFor="achievements" className="block text-black text-xs mb-1">
+            <label
+              htmlFor="achievements"
+              className="block text-black text-xs mb-1"
+            >
               Achievements <span className="text-red-500">*</span>
             </label>
             <textarea
@@ -212,7 +248,9 @@ const ProfileTutor: React.FC = () => {
               className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-full h-25 resize-none"
               placeholder="Enter achievements (e.g., Graduated with honors in Senior High School)"
             ></textarea>
-            {errors.achievements && <p className="text-red-600 text-xs">{errors.achievements}</p>}
+            {errors.achievements && (
+              <p className="text-red-600 text-xs">{errors.achievements}</p>
+            )}
           </div>
 
           <div className="relative h-64">

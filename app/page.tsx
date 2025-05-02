@@ -7,10 +7,6 @@ import {useRouter} from 'next/navigation';
 export default function LandingPage() {
   const router = useRouter();
 
-  const handleBookingClick = () => {
-    router.push('/booking');
-  };
-
   return (
     <div className="min-h-screen font-sans flex flex-col relative overflow-auto">
       {/* Background */}

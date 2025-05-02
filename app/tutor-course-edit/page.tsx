@@ -1,10 +1,8 @@
-import CourseForm from '@/components/ProfileTutorCourse'
-import React from 'react'
+import CourseForm from "@/components/profile/ProfileTutorCourse";
+import React from "react";
 
 const page = () => {
-  return (
-    <CourseForm/>
-  )
-}
+  return <CourseForm />;
+};
 
-export default page
+export default page;

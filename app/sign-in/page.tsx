@@ -3,8 +3,14 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../firebase/config';
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+} from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase/config';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -14,22 +20,32 @@ export default function SignIn() {
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      // Removed automatic redirect to prevent conflicts
-    });
+    const unsubscribe = onAuthStateChanged(auth, () => {});
     return () => unsubscribe();
-  }, [router]);
+  }, []);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading) return;
-    
+
     setLoading(true);
     setError('');
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push('/role-selection');
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      const docRef = doc(db, 'users', user.uid);
+      const docSnap = await getDoc(docRef);
+      const userData = docSnap.data();
+
+      if (userData?.role === 'tutor') {
+        router.push('/dashboard/tutor');
+      } else if (userData?.role === 'student') {
+        router.push('/dashboard/student');
+      } else {
+        router.push('/role-selection');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
@@ -40,8 +56,20 @@ export default function SignIn() {
   const handleGoogleSignIn = async () => {
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-      router.push('/role-selection');
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      const docRef = doc(db, 'users', user.uid);
+      const docSnap = await getDoc(docRef);
+      const userData = docSnap.data();
+
+      if (userData?.role === 'tutor') {
+        router.push('/dashboard/tutor');
+      } else if (userData?.role === 'student') {
+        router.push('/dashboard/student');
+      } else {
+        router.push('/role-selection');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unknown error occurred');
     }
@@ -54,11 +82,9 @@ export default function SignIn() {
         <div className="absolute inset-0 bg-black/20" />
       </div>
 
-      {/* Main scaling container - everything inside will scale together */}
       <div className="relative min-h-screen flex justify-end transform scale-100 origin-right">
         <div className="w-1/2 min-w-[600px]">
           <div className="h-full w-full flex items-center justify-start pl-8">
-            {/* White background container - now part of the scaling group */}
             <div className="w-[95%] min-h-[90vh] bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-12 flex flex-col justify-center my-8">
               <div className="max-w-lg mx-auto w-full space-y-10">
                 <div className="flex justify-center">
@@ -127,7 +153,7 @@ export default function SignIn() {
 
                 <div className="text-center mt-10">
                   <p className="text-xl text-gray-600">
-                    Don't have an account?{' '}
+                    Don&apos;t have an account?{' '}
                     <button
                       onClick={() => router.push('/sign-up')}
                       className="text-[#446090] font-semibold hover:underline text-xl"
