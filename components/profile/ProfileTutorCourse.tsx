@@ -1,7 +1,14 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { db } from "@/lib/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import Sidebar from "@/components/Sidebar";
+import { useParams } from 'next/navigation';
+
+interface Props {
+  course: string | null;
+}
 
 interface Lesson {
   name: string;
@@ -12,17 +19,13 @@ interface Course {
   lessons: Lesson[];
 }
 
-interface Props {
-  course: string | null;
-}
-
-const CourseForm: React.FC<Props> = ({course}) => {
+const CourseForm: React.FC<Props> = ({ course }) => {
   const [courses, setCourses] = useState<Course[]>([
     { name: "", lessons: [{ name: "" }] },
   ]);
   const [userId] = useState("user123");
+  
 
-  // Fetch existing data
   useEffect(() => {
     const fetchData = async () => {
       const docRef = doc(db, "user_courses", userId);
@@ -56,8 +59,7 @@ const CourseForm: React.FC<Props> = ({course}) => {
   };
 
   const removeCourse = (index: number) => {
-    const updated = courses.filter((_, i) => i !== index);
-    setCourses(updated);
+    setCourses(courses.filter((_, i) => i !== index));
   };
 
   const addLesson = (courseIndex: number) => {
@@ -86,101 +88,101 @@ const CourseForm: React.FC<Props> = ({course}) => {
     }
   };
 
-  
-    
-
   return (
-    <div>
-      <h1 className="text-xl font-bold mb-6 text-black">Courses & Lessons</h1>
-      <div>
-        <h1 className="text-xl text-black font-bold">Course: {course}</h1>
-      </div>
+    <div className="flex min-h-screen">
+      <Sidebar />
 
-      <form onSubmit={handleSubmit} className="space-y-8">
-        {courses.map((course, courseIndex) => (
-          <div key={courseIndex} className="border-b pb-6 mb-6">
-            <div className="mb-4 flex justify-between items-center">
-              <label className="block font-semibold text-sm text-black">
-                Course Name
-              </label>
-              {courses.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeCourse(courseIndex)}
-                  className="text-red-500 text-xs"
-                >
-                  Remove Course
-                </button>
-              )}
-            </div>
-            <input
-              type="text"
-              value={course.name}
-              onChange={(e) =>
-                handleCourseChange(courseIndex, e.target.value)
-              }
-              className="w-full border-2 px-3 py-2 rounded text-gray-700 mb-3"
-              placeholder="Enter course name"
-              required
-            />
+    
+      <div className="flex-1 flex justify-center items-center px-8 py-10 overflow-auto">
+        <div className="w-full max-w-4xl">
+          <h1 className="text-2xl font-bold mb-6 text-black">Courses & Lessons</h1>
+          <h2 className="text-lg text-black font-semibold mb-4">Selected Course: {course}</h2>
 
-            <div className="space-y-3">
-              <label className="block font-medium text-sm text-black">
-                Lessons
-              </label>
-              {course.lessons.map((lesson, lessonIndex) => (
-                <div key={lessonIndex} className="flex items-center space-x-2">
-                  <input
-                    type="text"
-                    value={lesson.name}
-                    onChange={(e) =>
-                      handleLessonChange(courseIndex, lessonIndex, e.target.value)
-                    }
-                    className="w-full border-2 px-3 py-2 rounded text-gray-700"
-                    placeholder={`Lesson ${lessonIndex + 1}`}
-                    required
-                  />
-                  {course.lessons.length > 1 && (
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {courses.map((course, courseIndex) => (
+              <div key={courseIndex} className="border-b pb-6 mb-6">
+                <div className="mb-4 flex justify-between items-center">
+                  <label className="block font-semibold text-sm text-black">
+                    Course Name
+                  </label>
+                  {courses.length > 1 && (
                     <button
                       type="button"
-                      onClick={() =>
-                        removeLesson(courseIndex, lessonIndex)
-                      }
+                      onClick={() => removeCourse(courseIndex)}
                       className="text-red-500 text-xs"
                     >
-                      Remove
+                      Remove Course
                     </button>
                   )}
                 </div>
-              ))}
+                <input
+                  type="text"
+                  value={course.name}
+                  onChange={(e) =>
+                    handleCourseChange(courseIndex, e.target.value)
+                  }
+                  className="w-full border-2 px-3 py-2 rounded text-gray-700 mb-3"
+                  placeholder="Enter course name"
+                  required
+                />
+
+                <div className="space-y-3">
+                  <label className="block font-medium text-sm text-black">
+                    Lessons
+                  </label>
+                  {course.lessons.map((lesson, lessonIndex) => (
+                    <div key={lessonIndex} className="flex items-center space-x-2">
+                      <input
+                        type="text"
+                        value={lesson.name}
+                        onChange={(e) =>
+                          handleLessonChange(courseIndex, lessonIndex, e.target.value)
+                        }
+                        className="w-full border-2 px-3 py-2 rounded text-gray-700"
+                        placeholder={`Lesson ${lessonIndex + 1}`}
+                        required
+                      />
+                      {course.lessons.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => removeLesson(courseIndex, lessonIndex)}
+                          className="text-red-500 text-xs"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => addLesson(courseIndex)}
+                    className="text-blue-600 text-sm mt-2"
+                  >
+                    + Add another lesson
+                  </button>
+                </div>
+              </div>
+            ))}
+
+            <button
+              type="button"
+              onClick={addCourse}
+              className="text-green-600 text-sm"
+            >
+              + Add another course
+            </button>
+
+            <div className="mt-6">
               <button
-                type="button"
-                onClick={() => addLesson(courseIndex)}
-                className="text-blue-600 text-sm mt-2"
+                type="submit"
+                className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
               >
-                + Add another lesson
+                Submit
               </button>
             </div>
-          </div>
-        ))}
-
-        <button
-          type="button"
-          onClick={addCourse}
-          className="text-green-600 text-sm"
-        >
-          + Add another course
-        </button>
-
-        <div className="mt-6">
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
-          >
-            Submit
-          </button>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

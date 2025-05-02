@@ -1,24 +1,50 @@
 'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import { db } from '@/lib/firebase';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import Sidebar from '../Sidebar';
 
 interface Review {
   id: string;
   comment: string;
   rating: number;
   tuteeId: string;
+  timestamp: number;
 }
+
+const StarRating = ({ rating }: { rating: number }) => (
+  <div className="flex">
+    {[1, 2, 3, 4, 5].map((star) => (
+      <span
+        key={star}
+        className={star <= rating ? 'text-yellow-400' : 'text-gray-300'}
+      >
+        ★
+      </span>
+    ))}
+  </div>
+);
+
+const formatDate = (timestamp: number) => {
+  const date = new Date(timestamp);
+  return new Intl.DateTimeFormat('en-US', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  }).format(date);
+};
 
 export default function TutorReviews() {
   const { tutorId } = useParams();
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (!tutorId || typeof tutorId !== 'string') return;
 
     const fetchReviews = async () => {
+      setLoading(true);
       try {
         const q = query(
           collection(db, 'users', tutorId, 'reviews'),
@@ -32,6 +58,8 @@ export default function TutorReviews() {
         setReviews(fetched);
       } catch (error) {
         console.error('Failed to fetch reviews:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -39,32 +67,37 @@ export default function TutorReviews() {
   }, [tutorId]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center px-4 py-10">
-      <div className="w-full max-w-2xl">
-        <h1 className="text-3xl font-bold mb-6 text-black text-center">Tutor Reviews</h1>
-        {reviews.length === 0 ? (
-          <p className="text-gray-500 text-center">No reviews yet.</p>
-        ) : (
-          reviews.map((review) => (
-            <div
-              key={review.id}
-              className="mb-6 p-5 border rounded-lg shadow-sm bg-gray-50"
-            >
-              <div className="flex mb-2">
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <span key={s} className={s <= review.rating ? 'text-yellow-400' : 'text-gray-300'}>
-                    ★
-                  </span>
-                ))}
+    <div className="relative flex min-h-screen">
+      <Sidebar />
+
+      <div className="flex-1 bg-white px-4 py-10 flex justify-center">
+        <div className="w-full max-w-2xl">
+          <h1 className="text-3xl font-bold mb-8 text-center text-black">
+            Tutor Reviews
+          </h1>
+
+          {loading ? (
+            <p className="text-center text-gray-500">Loading reviews...</p>
+          ) : reviews.length === 0 ? (
+            <p className="text-center text-gray-400">No reviews yet.</p>
+          ) : (
+            reviews.map((review) => (
+              <div
+                key={review.id}
+                className="mb-6 p-6 bg-gray-100 border border-gray-200 rounded-xl shadow-sm"
+              >
+                <StarRating rating={review.rating} />
+                <p className="mt-3 text-black">{review.comment}</p>
+                <div className="text-sm text-gray-500 mt-2">
+                  <p>Tutee ID: {review.tuteeId}</p>
+                  <p>Reviewed on: {formatDate(review.timestamp)}</p>
+                </div>
               </div>
-              <p className="text-black">{review.comment}</p>
-              <p className="text-sm text-gray-400 mt-2">Tutee ID: {review.tuteeId}</p>
-            </div>
-          ))
-        )}
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
 }
-
-
+;

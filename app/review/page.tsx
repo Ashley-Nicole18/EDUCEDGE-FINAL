@@ -1,22 +1,18 @@
 "use client";
-
-
 import { useSearchParams } from "next/navigation";
 import ProfileNav from "@/components/ProfileNav";
-import ProfileTutorCourse from "@/components/profile/ProfileTutorCourse";
+import ProfileTutorReviewDisplay from "@/components/profile/ProfileTutorReviewDisplay";
 
-
-const ProfileCoursePage = () => {
+const ReviewPage = () => {
   const searchParams = useSearchParams();
   const course = searchParams.get("course");
 
   return (
-    <div> 
+    <div>
       <ProfileNav course={course} />
-      <ProfileTutorCourse course={course} />
-     
+      <ProfileTutorReviewDisplay />
     </div>
   );
 };
 
-export default ProfileCoursePage;
+export default ReviewPage;

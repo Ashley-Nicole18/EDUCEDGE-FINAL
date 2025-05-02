@@ -83,8 +83,8 @@ const ProfileTutor: React.FC = () => {
                 Course
               </p>
             </Link>
-            <Link href="/reviews">
-              <p className="text-based text-black hover:text-orange-500 transition-all duration-300 cursor-pointer">
+            <Link href="/review">
+              <p className="text-base text-black hover:text-orange-500 transition-all duration-300 cursor-pointer">
                 Reviews
               </p>
             </Link>

@@ -1,8 +1,8 @@
-// /app/profiletutor/page.tsx
+
 "use client";
 
 import React from "react";
-import ProfileTutor from "@/components/ProfileTutor";
+import ProfileTutor from "@/components/profile/ProfileTutor";
 import { useSearchParams } from "next/navigation";
 
 const ProfileTutorPage = () => {
