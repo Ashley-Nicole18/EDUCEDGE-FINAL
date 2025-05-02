@@ -66,7 +66,12 @@ const ProfileTutor: React.FC = () => {
                 Information
               </p>
             </Link>
-            <Link href="/course">
+            <Link
+              href={{
+                pathname: "/profilecourse",
+                query: { course: formData.college },
+              }}
+            >
               <p className="text-based text-black hover:text-orange-500 transition-all duration-300 cursor-pointer">
                 Course
               </p>

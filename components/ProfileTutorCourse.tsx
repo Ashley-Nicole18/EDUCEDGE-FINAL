@@ -12,7 +12,11 @@ interface Course {
   lessons: Lesson[];
 }
 
-const CourseForm: React.FC = () => {
+interface Props {
+  course: string | null;
+}
+
+const CourseForm: React.FC<Props> = ({course}) => {
   const [courses, setCourses] = useState<Course[]>([
     { name: "", lessons: [{ name: "" }] },
   ]);
@@ -82,9 +86,15 @@ const CourseForm: React.FC = () => {
     }
   };
 
+  
+    
+
   return (
     <div>
       <h1 className="text-xl font-bold mb-6 text-black">Courses & Lessons</h1>
+      <div>
+        <h1 className="text-xl text-black font-bold">Course: {course}</h1>
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {courses.map((course, courseIndex) => (
@@ -174,5 +184,7 @@ const CourseForm: React.FC = () => {
     </div>
   );
 };
+
+
 
 export default CourseForm;
