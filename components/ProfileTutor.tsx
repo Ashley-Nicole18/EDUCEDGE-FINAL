@@ -61,11 +61,12 @@ const ProfileTutor: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           
           <div className="absolute top-6 left-0 right-200 flex justify-center space-x-10 items-center">
-            <Link href="/Information">
+            <Link href="/profile-tutor">  
               <p className="text-based text-black hover:text-orange-500 transition-all duration-300 cursor-pointer">
                 Information
               </p>
             </Link>
+
             <Link
               href={{
                 pathname: "/profilecourse",
