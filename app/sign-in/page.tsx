@@ -20,7 +20,9 @@ export default function SignIn() {
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, () => {});
+    const unsubscribe = onAuthStateChanged(auth, () => {
+      console.log(auth.currentUser)
+    });
     return () => unsubscribe();
   }, []);
 
@@ -40,9 +42,9 @@ export default function SignIn() {
       const userData = docSnap.data();
 
       if (userData?.role === 'tutor') {
-        router.push('/dashboard/tutor');
+        router.push('/dashboard');
       } else if (userData?.role === 'student') {
-        router.push('/dashboard/student');
+        router.push('/dashboard');
       } else {
         router.push('/role-selection');
       }
@@ -64,9 +66,9 @@ export default function SignIn() {
       const userData = docSnap.data();
 
       if (userData?.role === 'tutor') {
-        router.push('/dashboard/tutor');
+        router.push('/dashboard');
       } else if (userData?.role === 'student') {
-        router.push('/dashboard/student');
+        router.push('/dashboard');
       } else {
         router.push('/role-selection');
       }

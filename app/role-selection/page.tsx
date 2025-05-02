@@ -11,8 +11,14 @@ export default function SelectRole() {
   const router = useRouter();
   const [hoveredSide, setHoveredSide] = useState<'tutor' | 'student' | null>(null);
 
+  // suggest using a context to save data about the  current logged in user
+  // use another file for it, then wrap it in the app
+  // heres a sample nga pwede sundan: https://www.freecodecamp.org/news/create-full-s tack-app-with-nextjs13-and-firebase/
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(user)
+      }
       if (!user) {
         router.push('/sign-in');
       }
@@ -30,9 +36,9 @@ export default function SelectRole() {
     try {
       const userRef = doc(db, 'users', user.uid);
       const userData = {
+        uid: user.uid,
         role,
         email: user.email || '',
-        uid: user.uid,
       };
   
       console.log('Saving user role:', userData); // Debug log
@@ -40,7 +46,12 @@ export default function SelectRole() {
       await setDoc(userRef, userData, { merge: true });
   
       console.log('User role saved successfully!');
+      // suggest using a single page regardless of role, then render component on dashboard page
+      // based on the role
       router.push(`/dashboard/${role}`);
+
+
+
     } catch (error) {
       console.error('Error saving role to Firestore:', error);
       alert('Something went wrong. Please try again.');
