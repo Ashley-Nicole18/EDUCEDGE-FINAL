@@ -2,8 +2,9 @@
 "use client";
 
 import React from "react";
-import ProfileTutor from "@/components/ProfileTutor";
+
 import { useSearchParams } from "next/navigation";
+import ProfileTutor from "@/components/profile/ProfileTutor";
 
 const ProfileTutorPage = () => {
   return <ProfileTutor />;
