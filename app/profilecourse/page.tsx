@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useSearchParams } from "next/navigation";
 import ProfileNav from "@/components/ProfileNav";
 import ProfileTutorCourse from "@/components/profile/ProfileTutorCourse";

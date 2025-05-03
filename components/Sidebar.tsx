@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   UserCircleIcon,
@@ -38,7 +39,7 @@ const Sidebar: React.FC = () => {
       {links.map(({ href, label, Icon, className }) => {
         const isActive = pathname === href;
         return (
-          <a
+          <Link
             key={href}
             href={href}
             className={`flex items-center space-x-2 group hover:bg-gray-100 rounded px-2 py-1 ${isActive ? 'bg-gray-200 font-semibold text-blue-600' : ''} ${className || ''}`}
@@ -49,7 +50,7 @@ const Sidebar: React.FC = () => {
             <span className={`${isActive ? 'text-blue-600' : 'group-hover:text-blue-500'}`}>
               {label}
             </span>
-          </a>
+          </Link>
         );
       })}
     </div>

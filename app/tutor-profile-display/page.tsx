@@ -1,7 +1,7 @@
 // src/pages/ProfilePage.tsx
 "use client";
 
-import ProfileTutorDisplay from "@/components/profile/ProfileTutorDisplay";
+import ProfileTutorDisplay from "@/components/profile/ProfileTutorCourseDisplay";
 import { useAuth } from "@/hooks/useAuth"; // Importing the mock useAuth hook
 
 import React from "react";
