@@ -6,6 +6,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import Sidebar from "@/components/Sidebar";
 import { useParams } from 'next/navigation';
 
+
 interface Props {
   course: string | null;
 }
@@ -24,7 +25,7 @@ const CourseForm: React.FC<Props> = ({ course }) => {
     { name: "", lessons: [{ name: "" }] },
   ]);
   const [userId] = useState("user123");
-  
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,12 +90,12 @@ const CourseForm: React.FC<Props> = ({ course }) => {
   };
 
   return (
-    <div className="flex min-h-screen">
+ 
+    <div className="relative min-h-screen flex">
       <Sidebar />
+      
 
-    
-      <div className="flex-1 flex justify-center items-center px-8 py-10 overflow-auto">
-        <div className="w-full max-w-4xl">
+        <div className="mt-30 max-w-4xl mx-auto">
           <h1 className="text-2xl font-bold mb-6 text-black">Courses & Lessons</h1>
           <h2 className="text-lg text-black font-semibold mb-4">Selected Course: {course}</h2>
 
@@ -121,7 +122,7 @@ const CourseForm: React.FC<Props> = ({ course }) => {
                   onChange={(e) =>
                     handleCourseChange(courseIndex, e.target.value)
                   }
-                  className="w-full border-2 px-3 py-2 rounded text-gray-700 mb-3"
+                  className="w-150 border-2 px-3 py-2 rounded text-gray-700 mb-3"
                   placeholder="Enter course name"
                   required
                 />
@@ -138,7 +139,7 @@ const CourseForm: React.FC<Props> = ({ course }) => {
                         onChange={(e) =>
                           handleLessonChange(courseIndex, lessonIndex, e.target.value)
                         }
-                        className="w-full border-2 px-3 py-2 rounded text-gray-700"
+                        className="w-150 border-2 px-3 py-2 rounded text-gray-700"
                         placeholder={`Lesson ${lessonIndex + 1}`}
                         required
                       />
@@ -183,7 +184,7 @@ const CourseForm: React.FC<Props> = ({ course }) => {
           </form>
         </div>
       </div>
-    </div>
+    
   );
 };
 

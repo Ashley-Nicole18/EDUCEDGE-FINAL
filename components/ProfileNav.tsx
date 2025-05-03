@@ -1,31 +1,40 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
+const ProfileNav = ({ course }: { course?: string | null }) => {
+  const pathname = usePathname();
 
-const ProfileNav = ({ course }: { course?: string | null }) => (
-  <div className="relative w-full h-64 flex space-x-10 mt-6 ml-66">
-    <Link href="/profile-tutor">
-      <p className="text-base text-black hover:text-orange-500 transition-all duration-300 cursor-pointer">
-        Information
-      </p>
-    </Link>
+  const linkClasses = (href: string) =>
+    `text-base transition-colors duration-300 px-2 py-1 rounded cursor-pointer ${
+      pathname === href
+        ? "text-orange-500 font-semibold"
+        : "text-black hover:text-orange-500"
+    }`;
 
-    <Link
-      href={{
-        pathname: "/profilecourse",
-        query: { course: course ?? "" },
-      }}
-    >
-      <p className="text-base text-black hover:text-orange-500 transition-all duration-300 cursor-pointer">
-        Course
-      </p>
-    </Link>
+  return (
+    <nav className="w-full bg-gray-100 shadow-sm fixed top-0 left-0 z-50">
+      <div className="max-w-5xl mx-auto flex justify-center items-center py-4 px-6 space-x-10">
+        <Link href="/profile-tutor">
+          <span className={linkClasses("/profile-tutor")}>Information</span>
+        </Link>
 
-    <Link href="profile-tutor/review">
-      <p className="text-base text-black hover:text-orange-500 transition-all duration-300 cursor-pointer">
-        Reviews
-      </p>
-    </Link>
-  </div>
-);
+        <Link
+          href={{
+            pathname: "/profilecourse",
+            query: { course: course ?? "" },
+          }}
+        >
+          <span className={linkClasses("/profilecourse")}>Course</span>
+        </Link>
+
+        <Link href="/review">
+          <span className={linkClasses("/profile-tutor/review")}>Reviews</span>
+        </Link>
+      </div>
+    </nav>
+  );
+};
 
 export default ProfileNav;

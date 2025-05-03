@@ -64,56 +64,36 @@ const ProfileTutor: React.FC = () => {
   return (
     <div className="relative h-screen flex">
       <Sidebar />
-      <div className="p-17 px-10 max-w-7xl mx-auto w-full">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="absolute top-6 left-0 right-200 flex justify-center space-x-10 items-center">
-            <Link href="/profile-tutor">  
-              <p className="text-based text-black hover:text-orange-500 transition-all duration-300 cursor-pointer">
-                Information
-              </p>
-            </Link>
+      <div className="p-10 px-11 max-w-7xl mx-auto w-full">
+        <form onSubmit={handleSubmit} className="space-y-10">
+          
+            
 
-            <Link
-              href={{
-                pathname: "/profilecourse",
-                query: { course: formData.college },
-              }}
+        <div className="flex items-center space-x-6">
+          <div className="w-30 h-30 rounded-full overflow-hidden border border-gray-300 bg-gray-100">
+            <img
+              src={profilePicture || "/img/default-profile.png"}
+              alt="Profile"
+              className="object-cover w-full h-full"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="profilePictureUpload"
+              className="inline-block text-sm text-blue-500 cursor-pointer hover:underline"
             >
-              <p className="text-based text-black hover:text-orange-500 transition-all duration-300 cursor-pointer">
-                Course
-              </p>
-            </Link>
-            <Link href="/review">
-              <p className="text-base text-black hover:text-orange-500 transition-all duration-300 cursor-pointer">
-                Reviews
-              </p>
-            </Link>
+              Upload Photo
+            </label>
+            <input
+              id="profilePictureUpload"
+              type="file"
+              accept="image/*"
+              onChange={handleProfilePictureUpload}
+              className="hidden"
+            />
           </div>
+        </div>
 
-          <div className="flex items-center space-x-6">
-            <div className="w-30 h-30 rounded-full overflow-hidden border border-gray-300 flex items-center justify-center bg-gray-100">
-              <img
-                src={profilePicture || "/img/default-profile.png"}
-                alt="Profile Picture"
-                className="object-cover w-full h-full"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="profilePictureUpload"
-                className="block text-sm text-blue-500 cursor-pointer"
-              >
-                Upload Photo
-              </label>
-              <input
-                id="profilePictureUpload"
-                type="file"
-                accept="image/*"
-                onChange={handleProfilePictureUpload}
-                className="hidden"
-              />
-            </div>
-          </div>
 
           <h1 className="text-black text-based whitespace-nowrap mb-1">
             Personal Information
@@ -132,7 +112,7 @@ const ProfileTutor: React.FC = () => {
                 type="text"
                 value={formData.firstName}
                 onChange={handleChange}
-                className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-64"
+                className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-70"
                 placeholder="Enter first name"
               />
               {errors.firstName && (
@@ -153,7 +133,7 @@ const ProfileTutor: React.FC = () => {
                 type="text"
                 value={formData.lastName}
                 onChange={handleChange}
-                className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-64"
+                className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-70"
                 placeholder="Enter last name"
               />
               {errors.lastName && (
@@ -179,7 +159,7 @@ const ProfileTutor: React.FC = () => {
                 type="text"
                 value={formData.college}
                 onChange={handleChange}
-                className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-64"
+                className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-70"
                 placeholder="Enter college name"
               />
               {errors.college && (
@@ -200,7 +180,7 @@ const ProfileTutor: React.FC = () => {
                 type="text"
                 value={formData.courseYear}
                 onChange={handleChange}
-                className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-64"
+                className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-70"
                 placeholder="Enter course and year"
               />
               {errors.courseYear && (

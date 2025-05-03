@@ -8,9 +8,12 @@ const ReviewPage = () => {
   const course = searchParams.get("course");
 
   return (
-    <div>
-      <ProfileNav course={course} />
-      <ProfileTutorReviewDisplay />
+    <div className="min-h-screen pt-20"> 
+      <ProfileNav />
+
+      <div className="flex justify-center items-center p-8">
+        <ProfileTutorReviewDisplay />
+      </div>
     </div>
   );
 };

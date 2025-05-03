@@ -6,6 +6,7 @@ import { db } from '@/lib/firebase';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import Sidebar from '../Sidebar';
 
+
 interface Review {
   id: string;
   comment: string;
@@ -67,6 +68,7 @@ export default function TutorReviews() {
   }, [tutorId]);
 
   return (
+    
     <div className="relative flex min-h-screen">
       <Sidebar />
 

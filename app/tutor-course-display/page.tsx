@@ -1,9 +1,8 @@
-// app/tutor-profile/page.tsx
 'use client';
 
 import React from 'react';
-import TutorProfileDisplay from '@/components/TutorProfileDisplay'; // Adjust the import path as needed
-import Sidebar from '@/components/Sidebar'; // Your Sidebar component
+import TutorProfileDisplay from '@/components/profile/ProfileTutorReviewDisplay'; 
+import Sidebar from '@/components/Sidebar'; 
 
 const TutorProfilePage = () => {
   return (
