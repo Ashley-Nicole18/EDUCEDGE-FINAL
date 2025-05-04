@@ -21,7 +21,7 @@ export default function SignIn() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, () => {
-      console.log(auth.currentUser)
+      console.log(auth.currentUser);
     });
     return () => unsubscribe();
   }, []);
@@ -106,7 +106,7 @@ export default function SignIn() {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full p-6 text-xl rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30 transition-all"
+                      className="w-full p-6 text-xl rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30 transition-all text-black"
                       placeholder="you@example.com"
                       required
                     />
@@ -118,7 +118,7 @@ export default function SignIn() {
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full p-6 text-xl rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30 transition-all"
+                      className="w-full p-6 text-xl rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30 transition-all text-black"
                       placeholder="Enter your password"
                       required
                     />

@@ -31,7 +31,7 @@ export default function SignUpPage() {
       setEmail('');
       setPassword('');
       setConfirmPassword('');
-      router.push('/role-selection'); // Redirect to role selection
+      router.push('/role-selection');
     } catch (e: any) {
       console.error(e);
       setError(e instanceof Error ? e.message : 'Failed to create an account. Please try again.');
@@ -45,7 +45,7 @@ export default function SignUpPage() {
     try {
       const res = await signInWithPopup(auth, provider);
       console.log({ res });
-      router.push('/role-selection'); // Redirect to role selection
+      router.push('/role-selection');
     } catch (e) {
       console.error(e);
       setError(e instanceof Error ? e.message : 'Google sign-in failed. Please try again.');
@@ -97,7 +97,7 @@ export default function SignUpPage() {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full p-6 text-xl rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30 transition-all"
+                      className="w-full p-6 text-xl rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30 transition-all text-black"
                       placeholder="you@example.com"
                       required
                     />
@@ -109,7 +109,7 @@ export default function SignUpPage() {
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full p-6 text-xl rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30 transition-all"
+                      className="w-full p-6 text-xl rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30 transition-all text-black"
                       placeholder="Enter your password"
                       required
                     />
@@ -121,7 +121,7 @@ export default function SignUpPage() {
                       type="password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full p-6 text-xl rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30 transition-all"
+                      className="w-full p-6 text-xl rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30 transition-all text-black"
                       placeholder="Confirm your password"
                       required
                     />
