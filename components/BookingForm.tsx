@@ -107,7 +107,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ onSubmit }) => {
             onChange={handleChange}
             className={`mt-1 block w-full px-3 py-2 border ${
               errors.firstName ? 'border-red-300' : 'border-gray-300'
-            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+            } text-black rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
           />
           {errors.firstName && (
             <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
@@ -188,7 +188,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ onSubmit }) => {
           onChange={handleChange}
           className={`mt-1 block w-full px-3 py-2 border ${
             errors.subject ? 'border-red-300' : 'border-gray-300'
-          } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+          } rounded-md shadow-sm text-black focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
           placeholder="E.g., Math Tutoring, English Composition, etc."
         />
         {errors.subject && (
@@ -207,7 +207,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ onSubmit }) => {
           rows={4}
           value={formData.message}
           onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-black focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           placeholder="Any special requirements or topics you'd like to focus on..."
         />
       </div>
