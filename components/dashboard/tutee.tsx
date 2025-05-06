@@ -1,28 +1,21 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { UserCircleIcon } from "@heroicons/react/24/solid"; 
+import { UserCircleIcon } from "@heroicons/react/24/solid";
 import Sidebar from "../Sidebar";
+import { db } from "@/app/firebase/config";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
-interface TutorProps {
+interface Tutor {
   id: string;
-  name: string;
-  rating: number;
-  fullStars: number;
+  firstName: string;
+  lastName: string;
 }
 
-const tutors: TutorProps[] = [
-  { id: "1", name: "Tutor Name", rating: 5.0, fullStars: 5 },
-  { id: "2", name: "Tutor Name", rating: 4.8, fullStars: 4 },
-  { id: "3", name: "Tutor Name", rating: 4.9, fullStars: 5 },
-  { id: "4", name: "Tutor Name", rating: 4.7, fullStars: 4 },
-  { id: "5", name: "Tutor Name", rating: 5.0, fullStars: 5 },
-  { id: "6", name: "Tutor Name", rating: 4.6, fullStars: 4 },
-];
-
-const TutorCard: React.FC<TutorProps> = ({ id, name, rating, fullStars }) => {
+const TutorCard: React.FC<Tutor> = ({ id, firstName, lastName }) => {
+  const name = `${firstName} ${lastName}`;
   return (
     <div className="tutor-card border rounded-xl shadow-md p-4 bg-white">
       <div className="tutor-image flex justify-center items-center h-32 bg-blue-50 rounded-md mb-4">
@@ -30,12 +23,8 @@ const TutorCard: React.FC<TutorProps> = ({ id, name, rating, fullStars }) => {
       </div>
       <div className="tutor-info text-center">
         <div className="tutor-name text-lg font-semibold text-gray-800 mb-1">{name}</div>
-        <div className="tutor-rating flex items-center justify-center gap-2 text-yellow-500 text-sm mb-4">
-          <span>{'★'.repeat(fullStars)}{'☆'.repeat(5 - fullStars)}</span>
-          <span className="text-gray-700">{rating.toFixed(1)}</span>
-        </div>
         <Link
-          href={`/tutor/${id}`}
+          href={`/profile/${id}`}
           className="inline-block bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition"
         >
           View Profile
@@ -46,6 +35,77 @@ const TutorCard: React.FC<TutorProps> = ({ id, name, rating, fullStars }) => {
 };
 
 const TuteeDashboard: React.FC = () => {
+  const [allTutors, setAllTutors] = useState<Tutor[]>([]);
+  const [filteredTutors, setFilteredTutors] = useState<Tutor[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const fetchTutors = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const tutorsQuery = query(collection(db, 'users'), where('role', '==', 'tutor'));
+        const querySnapshot = await getDocs(tutorsQuery);
+        const fetchedTutors: Tutor[] = [];
+        querySnapshot.forEach((doc) => {
+          fetchedTutors.push({ id: doc.id, ...doc.data() } as Tutor);
+        });
+        setAllTutors(fetchedTutors);
+        setFilteredTutors(fetchedTutors);
+      } catch (e: unknown) {
+        console.error("Error fetching tutors:", e);
+        let errorMessage = "Failed to load tutors. Please try again later.";
+        if (e instanceof Error) {
+          errorMessage = `Failed to load tutors: ${e.message}. Please try again later.`;
+        }
+        setError(errorMessage);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTutors();
+  }, []);
+
+  const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+    const filtered = allTutors.filter((tutor) =>
+      `${tutor.firstName} ${tutor.lastName}`.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+    setFilteredTutors(filtered);
+  };
+
+  const handleSearchButtonClick = () => {
+    const filtered = allTutors.filter((tutor) =>
+      `${tutor.firstName} ${tutor.lastName}`.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredTutors(filtered);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex">
+        <Sidebar />
+        <div className="flex-1 dashboard p-8" style={{ marginLeft: '250px' }}>
+          <div className="text-center">Loading tutors...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex">
+        <Sidebar />
+        <div className="flex-1 dashboard p-8" style={{ marginLeft: '250px' }}>
+          <div className="text-center text-red-500">{error}</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -58,7 +118,7 @@ const TuteeDashboard: React.FC = () => {
 
       <div className="flex">
         <Sidebar />
-        <div className="flex-1 dashboard p-8">
+        <div className="flex-1 dashboard p-8" style={{ marginLeft: '250px' }}>
           <div className="header">
             <div className="logo">Find Your Tutor</div>
           </div>
@@ -77,23 +137,27 @@ const TuteeDashboard: React.FC = () => {
                 type="text"
                 className="search-input"
                 placeholder="Search for tutors or subjects..."
+                value={searchQuery}
+                onChange={handleSearchInputChange}
               />
-              <button className="search-button">Search</button>
+              <button className="search-button" onClick={handleSearchButtonClick}>
+                Search
+              </button>
             </div>
           </div>
 
           <div className="tutors-section">
-            <div className="section-title">Recommended Tutors</div>
+            <div className="section-title">Available Tutors</div>
             <div className="tutors-grid">
-              {tutors.map((tutor) => (
+              {filteredTutors.map((tutor) => ( 
                 <TutorCard
                   key={tutor.id}
                   id={tutor.id}
-                  name={tutor.name}
-                  rating={tutor.rating}
-                  fullStars={tutor.fullStars}
+                  firstName={tutor.firstName}
+                  lastName={tutor.lastName}
                 />
               ))}
+              {filteredTutors.length === 0 && !loading && <p>No tutors found matching your search.</p>}
             </div>
           </div>
         </div>

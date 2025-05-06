@@ -1,7 +1,7 @@
 'use client';
 
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import React, { useState } from 'react';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, AuthError } from 'firebase/auth';
+import { useState } from 'react';
 import { auth } from '@/app/firebase/config';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -14,9 +14,18 @@ export default function SignUpPage() {
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
+  const validateEmail = (email: string) => {
+    return email.endsWith('@cpu.edu.ph');
+  };
+
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
+
+    if (!validateEmail(email)) {
+      setError('Please use a valid CPU email address (@cpu.edu.ph)');
+      return;
+    }
 
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
@@ -26,15 +35,20 @@ export default function SignUpPage() {
     setLoading(true);
 
     try {
-      const res = await createUserWithEmailAndPassword(auth, email, password);
-      console.log({ res });
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-      router.push('/role-selection'); // Redirect to role selection
-    } catch (e: any) {
-      console.error(e);
-      setError(e instanceof Error ? e.message : 'Failed to create an account. Please try again.');
+      await createUserWithEmailAndPassword(auth, email, password);
+      router.push('/role-selection');
+    } catch (e) {
+      const error = e as AuthError;
+      switch (error.code) {
+        case 'auth/email-already-in-use':
+          setError('Email already registered');
+          break;
+        case 'auth/weak-password':
+          setError('Password should be at least 6 characters');
+          break;
+        default:
+          setError('Registration failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -43,12 +57,16 @@ export default function SignUpPage() {
   const handleGoogleSignup = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      const res = await signInWithPopup(auth, provider);
-      console.log({ res });
-      router.push('/role-selection'); // Redirect to role selection
+      const result = await signInWithPopup(auth, provider);
+      if (!result.user.email?.endsWith('@cpu.edu.ph')) {
+        await auth.signOut();
+        setError('Please use a CPU Google account (@cpu.edu.ph)');
+        return;
+      }
+      router.push('/role-selection');
     } catch (e) {
-      console.error(e);
-      setError(e instanceof Error ? e.message : 'Google sign-in failed. Please try again.');
+      const error = e as AuthError;
+      setError(error.message || 'Google sign-up failed');
     }
   };
 
@@ -98,9 +116,10 @@ export default function SignUpPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full p-6 text-xl rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30 transition-all"
-                      placeholder="you@example.com"
+                      placeholder="you@cpu.edu.ph"
                       required
                     />
+
                   </div>
 
                   <div className="space-y-6">

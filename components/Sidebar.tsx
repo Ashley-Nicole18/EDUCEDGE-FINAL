@@ -10,13 +10,15 @@ import {
   CalendarIcon,
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
+import { useAuth } from "@/hooks/useAuth";
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
+  const {user}= useAuth()
 
   const links = [
-    { href: "/profile-tutor", label: "Profile", Icon: UserCircleIcon },
-    { href: "/dash", label: "Dashboard", Icon: HomeIcon },
+    { href: `/profile/${user?.uid}`, label: "Profile", Icon: UserCircleIcon },
+    { href: "/dashboard", label: "Dashboard", Icon: HomeIcon },
     { href: "/booking", label: "Booking", Icon: CalendarIcon },
     { href: "/home", label: "Sign Out", Icon: ArrowRightOnRectangleIcon, className: "mt-auto" },
   ];

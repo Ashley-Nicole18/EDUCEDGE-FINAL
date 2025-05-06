@@ -1,8 +1,7 @@
-// Review Page for Tutee
 'use client';
 import { useRouter, useParams } from 'next/navigation';
 import { useState } from 'react';
-import { db, auth } from '@/lib/firebase';
+import { db, auth } from '@/app/firebase/config';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 export default function ReviewForm() {
@@ -11,19 +10,37 @@ export default function ReviewForm() {
   const tutorId = Array.isArray(params?.tutorId) ? params.tutorId[0] : params?.tutorId;
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
     const user = auth.currentUser;
-    if (!user || !tutorId) return;
+    if (!user || !tutorId) {
+      setSubmissionError('Not authenticated or tutor ID is missing.');
+      return;
+    }
 
-    await addDoc(collection(db, 'users', tutorId, 'reviews'), {
-      tuteeId: user.uid,
-      comment,
-      rating,
-      timestamp: serverTimestamp(),
-    });
+    setIsSubmitting(true);
+    setSubmissionError(null);
 
-    router.push('/dashboard/student');
+    try {
+      await addDoc(collection(db, 'users', tutorId, 'reviews'), {
+        tuteeId: user.uid,
+        comment,
+        rating,
+        timestamp: serverTimestamp(),
+      });
+      setIsSubmitting(false);
+      router.push('/dashboard/student');
+    } catch (error: unknown) {
+      setIsSubmitting(false);
+      if (error instanceof Error) {
+        setSubmissionError(`Failed to submit review: ${error.message}`);
+      } else {
+        setSubmissionError('An unexpected error occurred while submitting the review.');
+      }
+      console.error('Failed to submit review:', error);
+    }
   };
 
   return (
@@ -51,11 +68,13 @@ export default function ReviewForm() {
             </button>
           ))}
         </div>
+        {submissionError && <p className="text-red-500 mb-4">{submissionError}</p>}
         <button
           onClick={handleSubmit}
-          className="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition"
+          className={`w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+          disabled={isSubmitting}
         >
-          Submit Review
+          {isSubmitting ? 'Submitting...' : 'Submit Review'}
         </button>
       </div>
     </div>

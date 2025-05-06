@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import BookingSystem from '@/components/Booking';
+import BookingSystem from "@/components/booking/Booking";
 
 export default function BookingPage() {
   return (
