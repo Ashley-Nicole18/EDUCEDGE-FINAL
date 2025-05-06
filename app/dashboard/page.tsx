@@ -1,49 +1,74 @@
 "use client";
 import { auth, db } from "../firebase/config";
-// hello use one firesbase nga config only
-// use either the one on lib/firebase or the one on app/firebase/config
-
 import { doc, getDoc } from "firebase/firestore";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
+import TutorDashboard from "@/components/dashboard/tutor";
+import { useRouter } from "next/navigation";
+import TuteeDashboard from "@/components/dashboard/tutee";
 
-// check role based on the user's role
-// then render the correct components based on the role
+type UserRole = "tutor" | "tutee" | null;
 
-const Page = () => {
-  const [role, setRole] = React.useState<string | null>(null);
+const DashboardPage = () => {
+  const [role, setRole] = useState<UserRole>(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
-    const subscription = onAuthStateChanged(auth, (user) => {
-      console.log(user);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        router.push("/sign-in");
+        return;
+      }
 
-      if (user) {
+      try {
         const userRef = doc(db, "users", user.uid);
-        getDoc(userRef).then((doc) => {
-          if (doc.exists()) {
-            const data = doc.data();
-            setRole(data?.role || null);
-          } else {
-            console.log("No such document!");
-          }
-        });
+        const docSnap = await getDoc(userRef);
+        
+        if (!docSnap.exists()) {
+          router.push("/role-selection");
+          return;
+        }
+
+        const userRole = docSnap.data()?.role as UserRole;
+        if (!userRole) {
+          router.push("/role-selection");
+          return;
+        }
+
+        setRole(userRole);
+      } catch (error) {
+        console.error("Error fetching user role:", error);
+        router.push("/sign-in");
+      } finally {
+        setLoading(false);
       }
     });
 
-    return () => subscription();
-  }, []);
-  return <div>{role}
-  {
-    role === "tutor" ? (
-      <div>Tutor Dashboard</div>
-    ) : role === "student" ? (
-      <div>Student Dashboard</div>
-    ) : (
-      <div>Please select a role</div>
-    )
+    return () => unsubscribe();
+  }, [router]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div>Loading...</div>
+      </div>
+    );
   }
-  
-  </div>;
+
+  return (
+    <div>
+      {role === "tutor" ? (
+        <TutorDashboard />
+      ) : role === "tutee" ? (
+        <TuteeDashboard/>
+      ) : (
+        <div className="flex justify-center items-center min-h-screen">
+          <div>Invalid role configuration</div>
+        </div>
+      )}
+    </div>
+  );
 };
 
-export default Page;
+export default DashboardPage;

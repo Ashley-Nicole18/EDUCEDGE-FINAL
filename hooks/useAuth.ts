@@ -1,37 +1,36 @@
-'use client';
-// src/hooks/useAuth.ts
+'use client'
+
 import { useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
-import { auth } from "@/lib/firebase"; // adjust based on your setup
+import { db, auth } from "@/app/firebase/config";
+import { doc, getDoc } from "firebase/firestore";
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [role, setRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        setUser(firebaseUser);
+
+        // 🔎 Fetch the user's role from Firestore
+        const userDocRef = doc(db, "users", firebaseUser.uid);
+        const userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+          setRole(userDocSnap.data().role); // assumes role is stored as `role: 'tutor' | 'tutee'`
+        }
+      } else {
+        setUser(null);
+        setRole(null);
+      }
+      setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
-  return { user };
+  return { user, role, loading };
 };
 
-// src/hooks/useAuth.ts
-// import { useState } from "react";
-
-// // Dummy user for testing purposes
-// const useAuth = () => {
-//   const [user] = useState({
-//     uid: "dummy-tutor-id", // Use a hardcoded UID for testing
-//     firstName: "John",
-//     lastName: "Doe",
-//     schoolEmail: "johndoe@example.com",
-//     // Any other data you want to mock
-//   });
-
-//   return { user };
-// };
-
-// export { useAuth };
