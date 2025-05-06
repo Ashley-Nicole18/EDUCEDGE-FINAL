@@ -23,7 +23,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
       {user?.role === "tutor" ? (
         <ProfileHeader userId={id} /> 
       ) : user?.role === "tutee" ? (
-        <ProfileTutee />
+        <ProfileTutee/>
       ) : (
         <div>no valid role found</div>
       )}
