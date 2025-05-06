@@ -44,12 +44,12 @@ export default function ReviewForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4">
+    <div className="min-h-screen flex items-center justify-center bg-white px-10">
       <div className="w-full max-w-lg bg-gray-100 rounded-lg shadow-lg p-6">
         <h1 className="text-3xl font-bold text-center mb-6 text-black">Write a Review</h1>
         <textarea
-          className="w-full border border-gray-300 text-black p-3 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          rows={5}
+          className="w-100 border border-gray-300 text-black p-3 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          rows={10}
           placeholder="Write your comment here..."
           value={comment}
           onChange={(e) => setComment(e.target.value)}

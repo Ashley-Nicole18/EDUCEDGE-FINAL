@@ -149,7 +149,7 @@ const TuteeDashboard: React.FC = () => {
           <div className="tutors-section">
             <div className="section-title">Available Tutors</div>
             <div className="tutors-grid">
-              {filteredTutors.map((tutor) => ( 
+              {filteredTutors.map((tutor) => (
                 <TutorCard
                   key={tutor.id}
                   id={tutor.id}
@@ -161,7 +161,7 @@ const TuteeDashboard: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> {/* ✅ This was the missing closing tag */}
 
       <style jsx>{`
         .dashboard {
