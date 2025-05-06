@@ -4,7 +4,7 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { UserCircleIcon } from "@heroicons/react/24/solid"; 
-import Sidebar from "../Sidebar";
+
 
 interface TutorProps {
   id: string;
@@ -56,8 +56,7 @@ const TuteeDashboard: React.FC = () => {
         />
       </Head>
 
-      <div className="flex">
-        <Sidebar />
+      
         <div className="flex-1 dashboard p-8">
           <div className="header">
             <div className="logo">Find Your Tutor</div>
@@ -97,7 +96,7 @@ const TuteeDashboard: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      
 
       <style jsx>{`
         .dashboard {

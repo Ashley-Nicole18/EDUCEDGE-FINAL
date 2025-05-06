@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import Sidebar from "../Sidebar";
-import Link from "next/link";
+import TuteeSidebar from "../TuteeSidebar";
+
 
 const ProfileTutee: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -62,11 +62,11 @@ const ProfileTutee: React.FC = () => {
   };
   return (
     <div className="relative h-screen flex">
-      <Sidebar />
+      <TuteeSidebar />
       <div className="p-17 px-10 max-w-7xl mx-auto w-full">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex items-center space-x-6">
-            <div className="w-30 h-30 rounded-full overflow-hidden border border-gray-300 flex items-center justify-center bg-gray-100">
+            <div className="w-35 h-35 rounded-full overflow-hidden border border-gray-300 flex items-center justify-center bg-gray-100">
               <img
                 src={profilePicture || "/img/default-profile.png"}
                 alt="Profile Picture"
@@ -93,7 +93,7 @@ const ProfileTutee: React.FC = () => {
           <h1 className="text-black text-based whitespace-nowrap mb-1">
             Personal Information
           </h1>
-          <div className="flex space-x-10">
+          <div className="flex space-x-20">
             <div>
               <label
                 htmlFor="firstName"
@@ -107,7 +107,7 @@ const ProfileTutee: React.FC = () => {
                 type="text"
                 value={formData.firstName}
                 onChange={handleChange}
-                className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-64"
+                className="border border-gray-500 px-2 py-1 text-black text-sm rounded w-80"
                 placeholder="Enter first name"
               />
               {errors.firstName && (
@@ -128,7 +128,7 @@ const ProfileTutee: React.FC = () => {
                 type="text"
                 value={formData.lastName}
                 onChange={handleChange}
-                className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-64"
+                className="border border-gray-500 px-2 py-1 text-black text-sm rounded w-80"
                 placeholder="Enter last name"
               />
               {errors.lastName && (
@@ -140,7 +140,7 @@ const ProfileTutee: React.FC = () => {
           <h2 className="text-black text-based font-medium mb-1">
             Academic Information
           </h2>
-          <div className="flex space-x-10">
+          <div className="flex space-x-20">
             <div>
               <label
                 htmlFor="college"
@@ -154,7 +154,7 @@ const ProfileTutee: React.FC = () => {
                 type="text"
                 value={formData.college}
                 onChange={handleChange}
-                className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-64"
+                className="border border-gray-500 px-2 py-1 text-black text-sm rounded w-80"
                 placeholder="Enter college name"
               />
               {errors.college && (
@@ -175,7 +175,7 @@ const ProfileTutee: React.FC = () => {
                 type="text"
                 value={formData.courseYear}
                 onChange={handleChange}
-                className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-64"
+                className="border border-gray-500 px-2 py-1 text-black text-sm rounded w-80"
                 placeholder="Enter course and year"
               />
               {errors.courseYear && (
@@ -197,7 +197,7 @@ const ProfileTutee: React.FC = () => {
               type="email"
               value={formData.schoolEmail}
               onChange={handleChange}
-              className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-100"
+              className="border border-gray-500 px-2 py-1 text-black text-sm rounded w-125"
               placeholder="Enter school email"
             />
             {errors.schoolEmail && (
@@ -220,7 +220,7 @@ const ProfileTutee: React.FC = () => {
               name="achievements"
               value={formData.achievements}
               onChange={handleChange}
-              className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-full h-25 resize-none"
+              className="border border-gray-500 px-2 py-1 text-black text-sm rounded w-full h-25 resize-none"
               placeholder="Tell potential tutors about yourself and what you hope to achieve through tutoring..."
             ></textarea>
             {errors.achievements && (

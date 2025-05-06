@@ -3,7 +3,7 @@ import ProfileNav from "@/components/ProfileNav";
 
 export default function Home() {
   return (
-    <div className="min-h-screen pt-10 mr-30"> 
+    <div className="min-h-screen pt-10 mr-1"> 
       <ProfileNav />
 
       <div className="flex justify-center items-center p-8">

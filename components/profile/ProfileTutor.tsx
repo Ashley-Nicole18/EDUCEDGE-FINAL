@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Sidebar from "../Sidebar";
-import Link from "next/link";
+
 
 const ProfileTutor: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -11,8 +11,9 @@ const ProfileTutor: React.FC = () => {
     college: "",
     courseYear: "",
     schoolEmail: "",
-    achievements: "",
+    achievements: [""],
   });
+  
   const [profilePicture, setProfilePicture] = useState<string | null>(
     "/img/default-profile.png"
   );
@@ -47,8 +48,12 @@ const ProfileTutor: React.FC = () => {
     else if (!/\S+@\S+\.\S+/.test(formData.schoolEmail)) {
       newErrors.schoolEmail = "Invalid email format.";
     }
-    if (!formData.achievements)
-      newErrors.achievements = "Achievements are required.";
+    if (
+      !formData.achievements.length ||
+      formData.achievements.some((achievement) => achievement.trim() === "")
+    ) {
+      newErrors.achievements = "Please add at least one valid achievement.";
+    }     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -70,17 +75,17 @@ const ProfileTutor: React.FC = () => {
             
 
         <div className="flex items-center space-x-6">
-          <div className="w-30 h-30 rounded-full overflow-hidden border border-gray-300 bg-gray-100">
+          <div className="w-35 h-35 rounded-full overflow-hidden border border-gray-300 bg-gray-100">
             <img
               src={profilePicture || "/img/default-profile.png"}
               alt="Profile"
               className="object-cover w-full h-full"
             />
           </div>
-          <div>
+          <div className="flex items-center space-x-4">
             <label
               htmlFor="profilePictureUpload"
-              className="inline-block text-sm text-blue-500 cursor-pointer hover:underline"
+              className="inline-block text-sm text-blue-500 cursor-pointer hover:underline transition-all duration-200"
             >
               Upload Photo
             </label>
@@ -90,6 +95,7 @@ const ProfileTutor: React.FC = () => {
               accept="image/*"
               onChange={handleProfilePictureUpload}
               className="hidden"
+              aria-label="Upload profile photo"
             />
           </div>
         </div>
@@ -98,7 +104,7 @@ const ProfileTutor: React.FC = () => {
           <h1 className="text-black text-based whitespace-nowrap mb-1">
             Personal Information
           </h1>
-          <div className="flex space-x-10">
+          <div className="flex space-x-20">
             <div>
               <label
                 htmlFor="firstName"
@@ -112,7 +118,7 @@ const ProfileTutor: React.FC = () => {
                 type="text"
                 value={formData.firstName}
                 onChange={handleChange}
-                className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-70"
+                className="border border-gray-500 px-2 py-1 text-black text-sm rounded w-80"
                 placeholder="Enter first name"
               />
               {errors.firstName && (
@@ -133,7 +139,7 @@ const ProfileTutor: React.FC = () => {
                 type="text"
                 value={formData.lastName}
                 onChange={handleChange}
-                className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-70"
+                className="border border-gray-500 px-2 py-1 text-black text-sm rounded w-80"
                 placeholder="Enter last name"
               />
               {errors.lastName && (
@@ -145,7 +151,7 @@ const ProfileTutor: React.FC = () => {
           <h2 className="text-black text-based font-medium mb-1">
             Academic Information
           </h2>
-          <div className="flex space-x-10">
+          <div className="flex space-x-20">
             <div>
               <label
                 htmlFor="college"
@@ -159,7 +165,7 @@ const ProfileTutor: React.FC = () => {
                 type="text"
                 value={formData.college}
                 onChange={handleChange}
-                className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-70"
+                className="border border-gray-500 px-2 py-1 text-black text-sm rounded w-80"
                 placeholder="Enter college name"
               />
               {errors.college && (
@@ -180,7 +186,7 @@ const ProfileTutor: React.FC = () => {
                 type="text"
                 value={formData.courseYear}
                 onChange={handleChange}
-                className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-70"
+                className="border border-gray-500 px-2 py-1 text-black text-sm rounded w-80"
                 placeholder="Enter course and year"
               />
               {errors.courseYear && (
@@ -202,7 +208,7 @@ const ProfileTutor: React.FC = () => {
               type="email"
               value={formData.schoolEmail}
               onChange={handleChange}
-              className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-100"
+              className="border border-gray-500 px-2 py-1 text-black text-sm rounded w-125"
               placeholder="Enter school email"
             />
             {errors.schoolEmail && (
@@ -214,24 +220,55 @@ const ProfileTutor: React.FC = () => {
             Credentials
           </h2>
           <div>
-            <label
-              htmlFor="achievements"
-              className="block text-black text-xs mb-1"
-            >
-              Achievements <span className="text-red-500">*</span>
-            </label>
-            <textarea
-              id="achievements"
-              name="achievements"
-              value={formData.achievements}
-              onChange={handleChange}
-              className="border border-gray-300 px-2 py-1 text-black text-sm rounded w-full h-25 resize-none"
-              placeholder="Enter achievements (e.g., Graduated with honors in Senior High School)"
-            ></textarea>
-            {errors.achievements && (
-              <p className="text-red-600 text-xs">{errors.achievements}</p>
-            )}
-          </div>
+  <label className="block text-black text-xs mb-1">
+    Achievements <span className="text-red-500">*</span>
+  </label>
+
+  {formData.achievements.map((achievement, index) => (
+    <div key={index} className="flex items-center mb-2 space-x-2">
+      <input
+        type="text"
+        value={achievement}
+        onChange={(e) => {
+          const updated = [...formData.achievements];
+          updated[index] = e.target.value;
+          setFormData({ ...formData, achievements: updated });
+        }}
+        className="border border-gray-500 px-2 py-1 text-black text-sm rounded w-full"
+        placeholder={`Achievement ${index + 1}`}
+      />
+      {formData.achievements.length > 1 && (
+        <button
+          type="button"
+          onClick={() => {
+            const updated = formData.achievements.filter((_, i) => i !== index);
+            setFormData({ ...formData, achievements: updated });
+          }}
+          className="text-red-500 text-xs hover:underline"
+        >
+          Remove
+        </button>
+      )}
+    </div>
+        ))}
+
+        <button
+          type="button"
+          onClick={() =>
+            setFormData({
+              ...formData,
+              achievements: [...formData.achievements, ""],
+            })
+          }
+          className="text-blue-500 text-sm mt-2 hover:underline"
+        >
+          + Add another achievement
+        </button>
+
+        {errors.achievements && (
+          <p className="text-red-600 text-xs mt-1">{errors.achievements}</p>
+        )}
+      </div>
 
           <div className="relative h-64">
             <button
