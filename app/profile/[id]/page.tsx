@@ -90,10 +90,10 @@ export default function ProfilePage() {
         {/* Profile Header */}
         <div className="flex items-center gap-6 mb-8">
           <img
-            src={authUser?.photoURL || '/default-avatar.png'}
-            alt="Profile Picture"
-            className="w-20 h-20 rounded-full object-cover border"
-          />
+              src={authUser?.photoURL || '/default-avatar.png'}
+              alt="Profile Picture"
+              className="w-20 h-20 rounded-full object-cover border"
+            />
 
           {isOwnProfile ? (
             editing ? (
@@ -128,7 +128,7 @@ export default function ProfilePage() {
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <h2 className="text-2xl font-semibold">{profileUser.name}</h2>
+                <h2 className="text-2xl font-semibold text-gray-800">{profileUser.name}</h2>
                 <button
                   onClick={() => setEditing(true)}
                   className="text-sm text-blue-600 hover:underline"
@@ -138,7 +138,7 @@ export default function ProfilePage() {
               </div>
             )
           ) : (
-            <h2 className="text-2xl font-semibold">{profileUser.name}</h2>
+            <h2 className="text-2xl font-semibold text-black">{profileUser.name}</h2>
           )}
         </div>
 

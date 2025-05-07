@@ -7,12 +7,12 @@ export default function BookingPage() {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar on the right */}
-      <div className="w-1/6 ">
+      <div className="w-1/6">
         <Sidebar />
       </div>
 
-      {/* Main content centered */}
-      <div className="flex-grow flex items-center justify-center overflow-auto">
+      {/* Main content aligned to top */}
+      <div className="flex-grow flex justify-center overflow-auto py-8">
         <div className="w-full max-w-5xl">
           <BookingSystem tutorId="12345" />
         </div>
