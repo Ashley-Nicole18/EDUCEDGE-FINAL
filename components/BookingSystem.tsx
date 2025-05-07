@@ -24,6 +24,9 @@ const typedMockAPI = mockAPI as unknown as MockAPI;
 const fetchAvailableDates = typedMockAPI.fetchAvailableDates;
 const fetchAvailableSlots = typedMockAPI.fetchAvailableSlots;
 const createBooking = typedMockAPI.createBooking;
+const fetchSessions = typedMockAPI.fetchSessions;
+const markSessionAsDone = typedMockAPI.markSessionAsDone;
+const cancelSession = typedMockAPI.cancelSession;
 
 interface BookingSystemProps {
   tutorId: string;
@@ -321,7 +324,12 @@ const BookingSystem: React.FC<BookingSystemProps> = ({ tutorId }) => {
           )}
         </div>
       ) : (
-        <SessionsList tutorId={tutorId} />
+        <SessionsList 
+          tutorId={tutorId} 
+          fetchSessions={fetchSessions}
+          markSessionAsDone={markSessionAsDone}
+          cancelSession={cancelSession}
+        />
       )}
     </div>
   );
