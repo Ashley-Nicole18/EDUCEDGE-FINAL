@@ -12,6 +12,8 @@
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
+    const [showPassword, setShowPassword] = useState(false);
+
 
     const validateEmail = (email: string) => {
       return email.endsWith('@cpu.edu.ph');
@@ -109,22 +111,32 @@
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full p-6 text-xl rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30 transition-all"
+                        className="w-full p-6 text-xl text-black rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30 transition-all"
                         placeholder="you@cpu.edu.ph"
                         required
                       />
+
                     </div>
 
                     <div className="space-y-6">
                       <label className="block text-2xl font-medium text-gray-700">Password</label>
-                      <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full p-6 text-xl rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30 transition-all"
-                        placeholder="Enter your password"
-                        required
-                      />
+                      <div className="relative">
+                        <input
+                          type={showPassword ? 'text' : 'password'}
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="w-full p-6 pr-16 text-xl text-black rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30 transition-all"
+                          placeholder="Enter your password"
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          className="absolute inset-y-0 right-4 flex items-center text-[#446090] text-sm font-medium hover:underline"
+                        >
+                          {showPassword ? 'Hide' : 'Show'}
+                        </button>
+                      </div>
                     </div>
 
                     <button
