@@ -9,7 +9,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen font-sans flex flex-col relative overflow-auto">
-      {/* Background */}
+     
       <div className="fixed inset-0 -z-10">
         <Image
           src="/img/bglanding.png"
@@ -22,7 +22,7 @@ export default function LandingPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/90 backdrop-blur-sm"></div>
       </div>
 
-      {/* Header */}
+      
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-sm py-3 px-6 sm:px-12 flex items-center justify-between h-16 border-b border-gray-100">
         <Image
           src="/img/EDUCEDGE.png"
@@ -33,7 +33,7 @@ export default function LandingPage() {
         />
       </header>
 
-      {/* Hero Section */}
+      
       <main className="flex-grow pt-28 pb-16 px-6 sm:px-12 flex flex-col items-center space-y-20 z-10">
         <section className="text-center space-y-6">
           <h1 className="text-4xl font-bold text-gray-900">Welcome to EducEdge</h1>
@@ -68,11 +68,11 @@ export default function LandingPage() {
         </section>
       </main>
 
-      {/* Footer */}
+      
       <footer className="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-12 w-full z-10">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {/* Add links/info for each footer column */}
+            
             <div><h3 className="text-lg font-bold mb-2">About</h3><p>EducEdge is a smart tutoring platform.</p></div>
             <div><h3 className="text-lg font-bold mb-2">Links</h3><ul><li><a href="#features">Features</a></li></ul></div>
             <div><h3 className="text-lg font-bold mb-2">Support</h3><p>Contact us at support@educedge.com</p></div>
