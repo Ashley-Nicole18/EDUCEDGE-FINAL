@@ -11,11 +11,11 @@ import {
 export default function TutorDashboard() {
 
 
-  const totalBookings = 24;
-  const totalEarnings = 720;
-  const successfulSessions = 20;
-  const lessonsTaught = 12;
-  const avgRating = 4.8;
+  const totalBookings = "No booking";
+  const totalEarnings = "No earnings yet";
+  const successfulSessions = "No completed sessions";
+  const lessonsTaught = "No lessons taught";
+  const avgRating = "No ratings yet";
 
 
   return (
