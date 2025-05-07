@@ -18,11 +18,9 @@ export default function SignInPage() {
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
-  const validateEmail = (email: string) => {
-    return email.endsWith('@cpu.edu.ph');
-  };
+  const validateEmail = (email: string) => email.endsWith('@cpu.edu.ph');
 
-  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
 
@@ -35,15 +33,13 @@ export default function SignInPage() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push('/dashboard');
+      router.push('/role-selection');
     } catch (e) {
       const error = e as AuthError;
       switch (error.code) {
-        case 'auth/wrong-password':
-          setError('Incorrect password');
-          break;
         case 'auth/user-not-found':
-          setError('Email not registered');
+        case 'auth/wrong-password':
+          setError('Invalid credentials. Please try again.');
           break;
         default:
           setError('Login failed. Please try again.');
@@ -53,7 +49,7 @@ export default function SignInPage() {
     }
   };
 
-  const handleGoogleSignIn = async () => {
+  const handleGoogleSignin = async () => {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
@@ -62,7 +58,7 @@ export default function SignInPage() {
         setError('Please use a CPU Google account (@cpu.edu.ph)');
         return;
       }
-      router.push('/dashboard');
+      router.push('/role-selection');
     } catch (e) {
       const error = e as AuthError;
       setError(error.message || 'Google sign-in failed');
@@ -71,7 +67,6 @@ export default function SignInPage() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 h-screen">
-      {/* Left Side: Blurred Background */}
       <div className="relative hidden md:block">
         <Image
           src="/img/bg.png"
@@ -84,10 +79,10 @@ export default function SignInPage() {
         <div className="absolute inset-0 bg-black/30" />
       </div>
 
-      {/* Right Side: Sign-In Panel */}
       <div className="flex items-center justify-center bg-white p-6 md:px-12">
-        <div className="w-full max-w-md space-y-6">
-          <div className="flex flex-col items-center space-y-6">
+        <div className="w-full max-w-md flex flex-col items-center">
+          {/* Shared Logo and Title Block */}
+          <div className="flex flex-col items-center mb-6 min-h-[180px]">
             <Image
               src="/img/EDUCEDGE.png"
               alt="EducEdge Logo"
@@ -96,78 +91,75 @@ export default function SignInPage() {
               className="object-contain"
               priority
             />
-
-            <h2 className="text-3xl font-bold text-gray-800">Welcome Back</h2>
-
-            <form onSubmit={handleSignIn} className="w-full space-y-4">
-              {error && (
-                <div className="text-red-500 text-center p-3 rounded-lg bg-red-50">
-                  {error}
-                </div>
-              )}
-
-              <div className="space-y-2">
-                <label className="block text-lg font-medium text-gray-700">Email</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full p-4 text-lg text-black rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30"
-                  placeholder="you@cpu.edu.ph"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="block text-lg font-medium text-gray-700">Password</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full p-4 text-lg text-black rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30"
-                  placeholder="Enter your password"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className={`w-full p-4 rounded-xl text-white font-semibold text-xl ${
-                  loading ? 'bg-[#446090]/70' : 'bg-[#446090] hover:bg-[#446090]/90'
-                }`}
-              >
-                {loading ? 'Signing In...' : 'Sign In'}
-              </button>
-            </form>
-
-            <div className="w-full flex items-center my-4">
-              <div className="flex-grow border-t border-gray-200"></div>
-              <span className="mx-4 text-gray-400">OR</span>
-              <div className="flex-grow border-t border-gray-200"></div>
-            </div>
-
-            {/* Google Sign-In Button */}
-            <button
-              onClick={handleGoogleSignIn}
-              className="w-full flex items-center justify-center gap-3 p-4 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium"
-            >
-              <Image src="/img/gool.png" alt="Google" width={24} height={24} />
-              <span>Sign in with Google</span>
-            </button>
-
-            <div className="text-center mt-4">
-              <p className="text-gray-600">
-                Don't have an account?{' '}
-                <button
-                  onClick={() => router.push('/sign-up')}
-                  className="text-[#446090] font-semibold hover:underline"
-                >
-                  Sign Up
-                </button>
-              </p>
-            </div>
+            <h2 className="text-3xl font-bold text-gray-800 mt-4">Welcome Back</h2>
           </div>
+
+          {/* Form Section */}
+          <form onSubmit={handleSignin} className="w-full space-y-4">
+            {error && (
+              <div className="text-red-500 text-center p-3 rounded-lg bg-red-50">
+                {error}
+              </div>
+            )}
+
+            <div>
+              <label className="block text-lg font-medium text-gray-700">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full p-4 text-lg rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30"
+                placeholder="you@cpu.edu.ph"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-lg font-medium text-gray-700">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-4 text-lg rounded-xl bg-gray-50 border border-gray-200 focus:border-[#446090] focus:ring-2 focus:ring-[#446090]/30"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full p-4 rounded-xl text-white font-semibold text-xl ${
+                loading ? 'bg-[#446090]/70' : 'bg-[#446090] hover:bg-[#446090]/90'
+              }`}
+            >
+              {loading ? 'Signing In...' : 'Sign In'}
+            </button>
+          </form>
+
+          <div className="w-full flex items-center my-4">
+            <div className="flex-grow border-t border-gray-200"></div>
+            <span className="mx-4 text-gray-400">OR</span>
+            <div className="flex-grow border-t border-gray-200"></div>
+          </div>
+
+          <button
+            onClick={handleGoogleSignin}
+            className="w-full flex items-center justify-center gap-3 p-4 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium"
+          >
+            <Image src="/img/gool.png" alt="Google" width={24} height={24} />
+            <span>Sign in with Google</span>
+          </button>
+
+          <p className="text-gray-600 mt-4">
+            Don't have an account?{' '}
+            <button
+              onClick={() => router.push('/sign-up')}
+              className="text-[#446090] font-semibold hover:underline"
+            >
+              Sign Up
+            </button>
+          </p>
         </div>
       </div>
     </div>

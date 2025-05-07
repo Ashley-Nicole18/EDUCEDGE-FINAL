@@ -245,9 +245,9 @@ const TutorCourses: React.FC<ManageCoursesProps> = ({ userId }) => {
                     </li>
                   ))
                 ) : (
-                  <p className="text-gray-600">
+                  <li className="text-gray-600">
                     No lessons in this course yet.
-                  </p>
+                  </li>
                 )}
               </ul>
             </div>
@@ -333,6 +333,7 @@ const TutorCourses: React.FC<ManageCoursesProps> = ({ userId }) => {
                         type="button"
                         onClick={() => removeLesson(courseIndex, lessonIndex)}
                         className="text-red-500 text-xs hover:underline focus:outline-none"
+                        title="Remove Lesson"
                       >
                         <FaMinus />
                       </button>
