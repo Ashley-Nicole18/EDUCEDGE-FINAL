@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { onAuthStateChanged, updateProfile, User } from 'firebase/auth';
 import { db, auth } from '@/app/firebase/config';
-import ProfileHeader from '@/components/profile-component/ProfileHeader';
+import ProfileHeader from '@/components/profile-component/ProfileTutor';
 import ProfileTutee from '@/components/profile-component/ProfileTutee';
 
 interface FirestoreUser {
