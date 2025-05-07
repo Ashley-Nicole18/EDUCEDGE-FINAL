@@ -52,7 +52,7 @@ const TutorCourses: React.FC<ManageCoursesProps> = ({ userId }) => {
           if (docSnap.exists() && docSnap.data()?.courses) {
             setCourses(docSnap.data().courses as Course[]);
           } else {
-            setCourses([{ name: "", lessons: [{ name: "", price: 0 }] }]);
+            setCourses([{ name: "", lessons: [{ name: "" }] }]);
           }
         } catch (e: unknown) {
           if (e instanceof Error) {
@@ -123,7 +123,7 @@ const TutorCourses: React.FC<ManageCoursesProps> = ({ userId }) => {
   };
 
   const addCourse = () => {
-    setCourses([...courses, { name: "", lessons: [{ name: "", price: 0 }] }]);
+    setCourses([...courses, { name: "", lessons: [{ name: "" }] }]);
   };
 
   const removeCourse = (index: number) => {
@@ -132,7 +132,7 @@ const TutorCourses: React.FC<ManageCoursesProps> = ({ userId }) => {
 
   const addLesson = (courseIndex: number) => {
     const updated = [...courses];
-    updated[courseIndex].lessons.push({ name: "", price: 0 });
+    updated[courseIndex].lessons.push({ name: "" });
     setCourses(updated);
   };
 
@@ -200,7 +200,7 @@ const TutorCourses: React.FC<ManageCoursesProps> = ({ userId }) => {
                   : "bg-blue-500 text-white hover:bg-blue-700"
               }`}
             >
-              {isEditing ? "View Courses" : "Configure Courses"}
+              {isEditing ? "View Courses" : "Add Courses"}
             </button>
           )}
       </div>
@@ -221,7 +221,7 @@ const TutorCourses: React.FC<ManageCoursesProps> = ({ userId }) => {
                     >
                       <span className="flex-grow">{lesson.name}</span>
                       <div className="flex items-center justify-center space-x-4">
-                        {lesson.price !== undefined && (
+                        {lesson.price && lesson.price > 0 && (
                           <span className="text-sm text-gray-600 mr-120">
                             ₱{lesson.price.toFixed(2)}
                           </span>
@@ -275,6 +275,7 @@ const TutorCourses: React.FC<ManageCoursesProps> = ({ userId }) => {
               </div>
               <input
                 type="text"
+                maxLength={25}
                 value={course.name}
                 onChange={(e) => handleCourseChange(courseIndex, e.target.value)}
                 className="w-full border rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm"
@@ -290,6 +291,7 @@ const TutorCourses: React.FC<ManageCoursesProps> = ({ userId }) => {
                   <div key={lessonIndex} className="flex items-center space-x-3">
                     <input
                       type="text"
+                      maxLength={35}
                       value={lesson.name}
                       onChange={(e) =>
                         handleLessonChange(
@@ -315,7 +317,7 @@ const TutorCourses: React.FC<ManageCoursesProps> = ({ userId }) => {
                         value={
                           lesson.price !== undefined
                             ? lesson.price.toString()
-                            : "0"
+                            : ""
                         }
                         onChange={(e) =>
                           handleLessonPriceChange(
