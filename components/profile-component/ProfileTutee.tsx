@@ -126,9 +126,6 @@ const ProfileTutee: React.FC = () => {
           <div className="bg-white rounded-lg shadow-md p-8">
             <div className="flex justify-between items-start mb-8">
               <div className="flex items-center space-x-6">
-                <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-200 flex items-center justify-center bg-gray-100">
-                  <UserCircleIcon className="h-16 w-16 text-gray-400" />
-                </div>
                 <div>
                   <h1 className="text-2xl font-bold text-gray-800">
                     {formData.firstName} {formData.lastName}

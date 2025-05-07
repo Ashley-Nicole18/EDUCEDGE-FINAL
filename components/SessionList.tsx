@@ -116,8 +116,8 @@ const SessionsList: React.FC<SessionsListProps> = ({
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="p-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto" />
       </div>
     );
   }
@@ -164,7 +164,7 @@ const SessionsList: React.FC<SessionsListProps> = ({
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     <FiUser className="text-gray-400" />
-                    <p className="font-medium text-lg">{session.studentName}</p>
+                    <p className="font-medium text-lg text-gray-800">{session.studentName}</p>
                   </div>
                   <p className="text-gray-800 font-semibold">{session.subject}</p>
                   
