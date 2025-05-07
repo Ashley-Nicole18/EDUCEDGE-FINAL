@@ -1,6 +1,8 @@
-
+import { useState, useEffect } from "react";
+import { auth } from "@/app/firebase/config";
+import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
-
+import Image from "next/image";
 import {
   ChartBarIcon,
   CurrencyDollarIcon,
@@ -9,23 +11,48 @@ import {
 } from "@heroicons/react/24/solid";
 
 export default function TutorDashboard() {
+  const [user, setUser] = useState<any>(null);
+  const router = useRouter();
 
+  const totalBookings = "No booking";
+  const totalEarnings = "No earnings yet";
+  const successfulSessions = "No completed sessions";
+  const lessonsTaught = "No lessons taught";
+  const avgRating = "No ratings yet";
 
-  const totalBookings = 24;
-  const totalEarnings = 720;
-  const successfulSessions = 20;
-  const lessonsTaught = 12;
-  const avgRating = 4.8;
-
+  useEffect(() => {
+    if (!auth.currentUser) {
+      // If no user is logged in, redirect to the login page
+      router.push("/sign-in");
+      return;
+    }
+    // Set the user state with logged-in user data
+    setUser(auth.currentUser);
+  }, [router]);
 
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
 
-      
-      <div className="flex-1 p-6 ml-48"> 
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">Dashboard</h1>
+      <div className="flex-1 p-6 ml-48">
+        {/* Profile Section */}
+        <div className="flex items-center space-x-4 mb-6">
+          {user?.photoURL && (
+            <Image
+              src={user.photoURL}
+              alt="Profile Picture"
+              width={50}
+              height={50}
+              className="rounded-full"
+            />
+          )}
+          <div>
+            <h2 className="text-xl font-bold text-gray-800">{user?.displayName || "Tutor"}</h2>
+            <p className="text-gray-600">{user?.email}</p>
+          </div>
+        </div>
 
+        <h1 className="text-3xl font-bold mb-6 text-gray-800">Dashboard</h1>
 
         <div className="bg-white mt-6 p-6 rounded shadow">
           <h2 className="text-xl font-semibold text-blue-600 mb-3">Upcoming Lessons</h2>
