@@ -1,8 +1,6 @@
-"use client";
 
-import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
-import SearchBar from "@/components/SearchBar";
+
 import {
   ChartBarIcon,
   CurrencyDollarIcon,
@@ -10,8 +8,8 @@ import {
   CalendarDaysIcon,
 } from "@heroicons/react/24/solid";
 
-export default function Dashboard() {
-  const [results, setResults] = useState<string[]>([]);
+export default function TutorDashboard() {
+
 
   const totalBookings = 24;
   const totalEarnings = 720;
@@ -19,10 +17,6 @@ export default function Dashboard() {
   const lessonsTaught = 12;
   const avgRating = 4.8;
 
-  const handleSearch = (query: string) => {
-    console.log("Searching for:", query);
-    setResults([`Result for "${query}"`]);
-  };
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -32,15 +26,6 @@ export default function Dashboard() {
       <div className="flex-1 p-6 ml-48"> 
         <h1 className="text-3xl font-bold mb-6 text-gray-800">Dashboard</h1>
 
-        <SearchBar onSearch={handleSearch} />
-
-        {results.length > 0 && (
-          <div className="bg-white mt-4 p-4 rounded shadow">
-            {results.map((res, idx) => (
-              <p key={idx} className="text-gray-800">{res}</p>
-            ))}
-          </div>
-        )}
 
         <div className="bg-white mt-6 p-6 rounded shadow">
           <h2 className="text-xl font-semibold text-blue-600 mb-3">Upcoming Lessons</h2>
