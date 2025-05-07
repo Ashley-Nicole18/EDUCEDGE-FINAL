@@ -7,11 +7,11 @@ import TutorInfoSection from "./Profile-Tutor-Info";
 import TutorCourses from "./Tutor-Course-Section";
 import TutorReviews from "./TutorReviews";
 
-interface ProfileHeaderProps {
+interface ProfileTutorProps {
   userId: string;
 }
 
-const ProfileHeader: React.FC<ProfileHeaderProps> = ({ userId }) => {
+const ProfileTutor: React.FC<ProfileTutorProps> = ({ userId }) => {
   const [activeSection, setActiveSection] = useState<"info" | "courses" | "reviews">("info");
 
   return (
@@ -22,7 +22,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ userId }) => {
           <div className="flex justify-between items-start">
             <div className="w-20 h-20 rounded-full overflow-hidden border border-gray-300 bg-gray-100 flex items-center justify-center">
               <FaUserCircle className="text-gray-400 text-6xl" />
-            </div>
+            </div>  
           </div>
 
           <div className="flex space-x-4 pt-4">
@@ -79,4 +79,4 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ userId }) => {
   );
 };
 
-export default ProfileHeader;
+export default ProfileTutor;

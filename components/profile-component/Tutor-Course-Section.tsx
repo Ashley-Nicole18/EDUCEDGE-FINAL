@@ -200,7 +200,7 @@ const TutorCourses: React.FC<ManageCoursesProps> = ({ userId }) => {
                   : "bg-blue-500 text-white hover:bg-blue-700"
               }`}
             >
-              {isEditing ? "View Courses" : "Edit Courses"}
+              {isEditing ? "View Courses" : "Configure Courses"}
             </button>
           )}
       </div>

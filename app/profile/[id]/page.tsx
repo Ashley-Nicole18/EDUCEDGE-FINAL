@@ -1,6 +1,6 @@
 // pages/[id].tsx
 import { db } from "@/app/firebase/config";
-import ProfileHeader from "@/components/profile-component/ProfileHeader";
+import ProfileTutor from "@/components/profile-component/ProfileTutor";
 import ProfileTutee from "@/components/profile-component/ProfileTutee";
 import { doc, getDoc } from "firebase/firestore";
 import React from "react";
@@ -22,7 +22,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
     <div className="flex-grow flex items-center justify-center overflow-auto min-h-screen bg-gray-50">
       <div className="w-full max-w-5xl">
         {user?.role === "tutor" ? (
-          <ProfileHeader userId={id} />
+          <ProfileTutor userId={id} />
         ) : user?.role === "tutee" ? (
           <ProfileTutee />
         ) : (
