@@ -19,15 +19,19 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
   console.log(user);
   return (
-    <>
-      {user?.role === "tutor" ? (
-        <ProfileHeader userId={id} /> 
-      ) : user?.role === "tutee" ? (
-        <ProfileTutee/>
-      ) : (
-        <div>no valid role found</div>
-      )}
-    </>
+    <div className="flex-grow flex items-center justify-center overflow-auto min-h-screen bg-gray-50">
+      <div className="w-full max-w-5xl">
+        {user?.role === "tutor" ? (
+          <ProfileHeader userId={id} />
+        ) : user?.role === "tutee" ? (
+          <ProfileTutee />
+        ) : (
+          <div className="text-center text-xl text-gray-700">
+            No valid role found
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 
