@@ -10,12 +10,10 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 
 interface Tutor {
   id: string;
-  firstName: string;
-  lastName: string;
+  name: string
 }
 
-const TutorCard: React.FC<Tutor> = ({ id, firstName, lastName }) => {
-  const name = `${firstName} ${lastName}`;
+const TutorCard: React.FC<Tutor> = ({ id, name }) => {
   return (
     <div className="tutor-card border rounded-xl shadow-md p-4 bg-white">
       <div className="tutor-image flex justify-center items-center h-32 bg-blue-50 rounded-md mb-4">
@@ -55,6 +53,8 @@ const TuteeDashboard: React.FC = () => {
         });
         setAllTutors(fetchedTutors);
         setFilteredTutors(fetchedTutors);
+
+        console.log(fetchedTutors)
       } catch (e: unknown) {
         console.error("Error fetching tutors:", e);
         setError("Failed to load tutors. Please try again later.");
@@ -69,7 +69,14 @@ const TuteeDashboard: React.FC = () => {
   const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
     const filtered = allTutors.filter((tutor) =>
-      `${tutor.firstName} ${tutor.lastName}`.toLowerCase().includes(event.target.value.toLowerCase())
+      tutor.name.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+    setFilteredTutors(filtered);
+  };
+
+  const handleSearchButtonClick = () => {
+    const filtered = allTutors.filter((tutor) =>
+     tutor.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredTutors(filtered);
   };
@@ -144,8 +151,7 @@ const TuteeDashboard: React.FC = () => {
                 <TutorCard
                   key={tutor.id}
                   id={tutor.id}
-                  firstName={tutor.firstName}
-                  lastName={tutor.lastName}
+                  name={tutor.name}
                 />
               ))}
               {filteredTutors.length === 0 && (
