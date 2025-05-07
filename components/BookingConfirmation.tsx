@@ -1,37 +1,85 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-
-interface BookingDetails {
-  reference: string;
-  date: string;
-  timeSlot: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  subject: string;
-  message?: string;
-  tutorId: string;
-}
+import { 
+  BookingDetails,
+  Session,
+  fetchSessions as fetchSessionsReal,
+} from '../lib/api';
+import { mockAPI } from '../lib/mockApi';
 
 interface BookingConfirmationProps {
   bookingDetails: BookingDetails;
   onNewBooking: () => void;
+  sessions?: Session[];
+  useMock?: boolean;
 }
 
-const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ bookingDetails, onNewBooking }) => {
+const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ 
+  bookingDetails, 
+  onNewBooking, 
+  sessions: initialSessions,
+  useMock = false
+}) => {
   const router = useRouter();
-  const [isSendingEmail, setIsSendingEmail] = useState(false);
-  const [emailSent, setEmailSent] = useState(false);
+  const [isSendingEmail, setIsSendingEmail] = useState<boolean>(false);
+  const [emailSent, setEmailSent] = useState<boolean>(false);
+  const [sessions, setSessions] = useState<Session[]>(initialSessions || []);
+  const [isLoadingSessions, setIsLoadingSessions] = useState<boolean>(false);
 
-  const handleSendEmail = async () => {
+  const fetchSessions = useMock 
+    ? mockAPI.fetchSessions 
+    : fetchSessionsReal;
+
+  useEffect(() => {
+    const loadSessions = async (): Promise<void> => {
+      if (!initialSessions && bookingDetails.tutorId) {
+        setIsLoadingSessions(true);
+        try {
+          const fetchedSessions = await fetchSessions(bookingDetails.tutorId);
+          setSessions(fetchedSessions);
+        } catch (error) {
+          console.error('Failed to fetch sessions:', error);
+        } finally {
+          setIsLoadingSessions(false);
+        }
+      }
+    };
+
+    loadSessions();
+  }, [bookingDetails.tutorId, fetchSessions, initialSessions]);
+
+  // Add booking as new session if not already present
+  useEffect(() => {
+    if (bookingDetails && bookingDetails.reference) {
+      const sessionExists = sessions.some(
+        session => session.reference === bookingDetails.reference
+      );
+
+      if (!sessionExists) {
+        const newSession: Session = {
+          id: `new-${bookingDetails.reference}`,
+          tutorId: bookingDetails.tutorId,
+          date: bookingDetails.date,
+          time: bookingDetails.timeSlot,
+          subject: bookingDetails.subject,
+          isDone: false,
+          reference: bookingDetails.reference, // Ensure Session has this
+        };
+        setSessions(prev => [newSession, ...prev]);
+      }
+    }
+  }, [bookingDetails, sessions]);
+
+  const handleSendEmail = async (): Promise<void> => {
     try {
       setIsSendingEmail(true);
-      // Implement email sending logic here
-      // For example: await fetch('/api/send-confirmation-email', { method: 'POST', body: JSON.stringify(bookingDetails) });
-      
+
+      if (useMock) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+
       setEmailSent(true);
     } catch (error) {
       console.error('Failed to send confirmation email:', error);
@@ -40,8 +88,20 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ bookingDetail
     }
   };
 
-  const handleDashboard = () => {
+  const handleDashboard = (): void => {
     router.push('/dashboard');
+  };
+
+  const handleViewSessions = (): void => {
+    router.push('/sessions');
+  };
+
+  const formatDate = (dateString: string): string => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    });
   };
 
   return (
@@ -52,58 +112,98 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ bookingDetail
       </div>
 
       <div className="bg-gray-50 p-6 rounded-md mb-6">
-        <h3 className="text-lg font-semibold mb-4 border-b pb-2">Booking Details</h3>
+        <h3 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Booking Details</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <p className="text-sm text-gray-500">Reference</p>
-            <p className="font-medium">{bookingDetails.reference}</p>
+            <p className="font-medium text-gray-800">{bookingDetails.reference}</p>
           </div>
           
           <div>
             <p className="text-sm text-gray-500">Date</p>
-            <p className="font-medium">{bookingDetails.date}</p>
+            <p className="font-medium text-gray-800">{formatDate(bookingDetails.date)}</p>
           </div>
           
           <div>
             <p className="text-sm text-gray-500">Time</p>
-            <p className="font-medium">{bookingDetails.timeSlot}</p>
+            <p className="font-medium text-gray-800">{bookingDetails.timeSlot}</p>
           </div>
           
           <div>
             <p className="text-sm text-gray-500">Subject</p>
-            <p className="font-medium">{bookingDetails.subject}</p>
+            <p className="font-medium text-gray-800">{bookingDetails.subject}</p>
           </div>
         </div>
       </div>
       
       <div className="bg-gray-50 p-6 rounded-md mb-6">
-        <h3 className="text-lg font-semibold mb-4 border-b pb-2">Contact Information</h3>
+        <h3 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Contact Information</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <p className="text-sm text-gray-500">Name</p>
-            <p className="font-medium">{bookingDetails.firstName} {bookingDetails.lastName}</p>
+            <p className="font-medium text-gray-800">{bookingDetails.firstName} {bookingDetails.lastName}</p>
           </div>
           
           <div>
             <p className="text-sm text-gray-500">Email</p>
-            <p className="font-medium">{bookingDetails.email}</p>
+            <p className="font-medium text-gray-800">{bookingDetails.email}</p>
           </div>
           
           <div>
             <p className="text-sm text-gray-500">Phone</p>
-            <p className="font-medium">{bookingDetails.phone}</p>
+            <p className="font-medium text-gray-800">{bookingDetails.phone}</p>
           </div>
         </div>
         
         {bookingDetails.message && (
           <div className="mt-4">
             <p className="text-sm text-gray-500">Message</p>
-            <p className="italic">{bookingDetails.message}</p>
+            <p className="italic text-gray-800">{bookingDetails.message}</p>
           </div>
         )}
       </div>
+      
+      {sessions && sessions.length > 0 && (
+        <div className="bg-blue-50 p-6 rounded-md mb-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 border-b border-blue-100 pb-2">
+            Your Upcoming Sessions
+          </h3>
+          
+          {isLoadingSessions ? (
+            <div className="flex justify-center py-4">
+              <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {sessions
+                .filter(session => !session.isDone)
+                .slice(0, 2)
+                .map(session => (
+                  <div key={session.id} className="flex justify-between items-center p-2 border-b border-blue-100">
+                    <div>
+                      <p className="font-medium">{formatDate(session.date)}, {session.time}</p>
+                      <p className="text-sm text-gray-600">{session.subject}</p>
+                    </div>
+                  </div>
+                ))
+              }
+              
+              {sessions.filter(session => !session.isDone).length > 2 && (
+                <div className="text-center pt-2">
+                  <button 
+                    onClick={handleViewSessions}
+                    className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                  >
+                    View all {sessions.filter(session => !session.isDone).length} upcoming sessions
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
       
       <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
         {!emailSent ? (
