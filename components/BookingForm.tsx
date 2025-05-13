@@ -16,26 +16,27 @@ interface BookingFormProps {
 }
 
 const BookingForm: React.FC<BookingFormProps> = ({ onSubmit, onReset }) => {
-  const [formData, setFormData] = useState<FormData>({
-    message: ''
-  });
+  const [formData, setFormData] = useState<FormData>({ message: '' });
+
 
   const [errors, setErrors] = useState<FormErrors>({});
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     const { name, value } = e.target;
+  
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-
-    if (errors[name as keyof FormErrors]) {
+  
+    if (name in errors) {
       setErrors(prev => ({
         ...prev,
         [name]: undefined
       }));
     }
   };
+  
 
   const validateForm = (): boolean => {
     // Message is optional, no validation required

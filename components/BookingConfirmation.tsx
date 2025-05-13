@@ -94,7 +94,31 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({
         setIsLoadingSessions(true);
         try {
           const fetchedSessions = await fetchSessions(bookingDetails.tutorId, userEmail);
-          setSessions(fetchedSessions);
+  
+          const mapStatus = (status: string): 'upcoming' | 'done' | 'cancelled' => {
+            switch (status.toLowerCase()) {
+              case 'scheduled':
+              case 'upcoming':
+                return 'upcoming';
+              case 'complete':
+              case 'done':
+                return 'done';
+              case 'cancelled':
+              case 'canceled':
+                return 'cancelled';
+              default:
+                return 'upcoming';
+            }
+          };
+  
+          const completeSessions: Session[] = fetchedSessions.map(session => ({
+            ...session,
+            tutorId: bookingDetails.tutorId,
+            isDone: false,
+            status: mapStatus(session.status)
+          }));
+  
+          setSessions(completeSessions);
         } catch (error) {
           console.error('Failed to fetch sessions:', error);
         } finally {
@@ -102,6 +126,8 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({
         }
       }
     };
+  
+  
 
     loadSessions();
   }, [bookingDetails.tutorId, userEmail, initialSessions, fetchSessions]);
@@ -123,6 +149,7 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({
           reference: bookingDetails.reference,
           status: 'upcoming',
           studentName: `${bookingDetails.firstName} ${bookingDetails.lastName}`,
+          subject: ''
         };
         setSessions((prev) => [newSession, ...prev]);
       }
