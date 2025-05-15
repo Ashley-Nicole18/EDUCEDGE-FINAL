@@ -74,12 +74,6 @@ const TuteeDashboard: React.FC = () => {
     setFilteredTutors(filtered);
   };
 
-  const handleSearchButtonClick = () => {
-    const filtered = allTutors.filter((tutor) =>
-     tutor.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredTutors(filtered);
-  };
 
   if (loading) {
     return (

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Sidebar from "../Sidebar";
-import { UserCircleIcon, PencilIcon } from "@heroicons/react/24/outline";
+import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { db, auth } from "@/app/firebase/config";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
@@ -137,7 +137,7 @@ const ProfileTutee: React.FC = () => {
                 onClick={handleEdit}
                 className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition-colors"
               >
-                <PencilIcon className="h-5 w-5" />
+                {/* <PencilIcon className="h-5 w-5" /> */}
                 <span>Edit Profile</span>
               </button>
             </div>
@@ -200,18 +200,18 @@ const ProfileTutee: React.FC = () => {
       <div className="flex-1 p-8 max-w-6xl mx-auto">
         <div className="bg-white rounded-lg shadow-md p-8">
           <form onSubmit={handleSubmit} className="space-y-8">
-            <div className="flex items-center space-x-6 mb-8">
-              <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-200 flex items-center justify-center bg-gray-100">
-                <UserCircleIcon className="h-16 w-16 text-gray-400" />
+            <div className="flex items-center space-x-6 mb-6"> {/* Reduced margin-bottom */}
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-gray-200 flex items-center justify-center bg-gray-100"> {/* Smaller size */}
+                <UserCircleIcon className="h-12 w-12 text-gray-400" /> {/* Smaller icon */}
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-800">Edit Profile</h1>
-                <p className="text-gray-600">Update your personal information</p>
+                <h1 className="text-2xl font-bold text-gray-800">Your Profile</h1> {/* Changed text */}
+                <p className="text-gray-600 text-sm">Manage your information</p> {/* Added subtitle */}
               </div>
             </div>
 
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b border-gray-200">
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
                 Personal Information
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -225,7 +225,7 @@ const ProfileTutee: React.FC = () => {
                     type="text"
                     value={formData.firstName}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-800" 
                     placeholder="Enter first name"
                   />
                   {errors.firstName && (
@@ -243,7 +243,7 @@ const ProfileTutee: React.FC = () => {
                     type="text"
                     value={formData.lastName}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-800" 
                     placeholder="Enter last name"
                   />
                   {errors.lastName && (
@@ -254,7 +254,7 @@ const ProfileTutee: React.FC = () => {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b border-gray-200">
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
                 Academic Information
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -268,7 +268,7 @@ const ProfileTutee: React.FC = () => {
                     type="text"
                     value={formData.college}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-800" 
                     placeholder="Enter college name"
                   />
                   {errors.college && (
@@ -286,7 +286,7 @@ const ProfileTutee: React.FC = () => {
                     type="text"
                     value={formData.courseYear}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-800" 
                     placeholder="e.g. Computer Science, 3rd Year"
                   />
                   {errors.courseYear && (
@@ -304,7 +304,7 @@ const ProfileTutee: React.FC = () => {
                     type="email"
                     value={formData.schoolEmail}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-800"
                     placeholder="Enter school email"
                   />
                   {errors.schoolEmail && (
@@ -315,8 +315,8 @@ const ProfileTutee: React.FC = () => {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b border-gray-200">
-                Additional Information
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
+                About Me & Learning Goals
               </h2>
               <div>
                 <label htmlFor="achievements" className="block text-sm font-medium text-gray-700 mb-1">
@@ -327,7 +327,7 @@ const ProfileTutee: React.FC = () => {
                   name="achievements"
                   value={formData.achievements}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 min-h-[150px]"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 min-h-[150px] text-gray-800" 
                   placeholder="Tell potential tutors about yourself and what you hope to achieve through tutoring..."
                 />
                 {errors.achievements && (

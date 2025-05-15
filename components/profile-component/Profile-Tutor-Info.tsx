@@ -18,7 +18,7 @@ interface TutorInfo {
 type UpdateTutorInfo = Partial<TutorInfo>;
 
 interface TutorInfoSectionProps {
-  userId: string | null; 
+  userId: string | null;
 }
 
 const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
@@ -188,17 +188,6 @@ const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
 
   return (
     <div className="bg-white rounded-md shadow-md p-6">
-      <div className="flex justify-end mb-4">
-        {!isEditing && hasProfileData && profileRole === 'tutor' && currentUserUid === userId && (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 text-sm"
-          >
-            Edit Profile
-          </button>
-        )}
-      </div>
-
       {isEditing || !hasProfileData ? (
         <form onSubmit={handleSubmit} className="space-y-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">Edit Profile Information</h2>
@@ -258,7 +247,19 @@ const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
           </div>
         </form>
       ) : (
-        <ProfileDisplay data={formData} />
+        <>
+          <ProfileDisplay data={formData} />
+          {profileRole === 'tutor' && currentUserUid === userId && (
+            <div className="mt-6 flex justify-end">
+              <button
+                onClick={() => setIsEditing(true)}
+                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 text-sm"
+              >
+                Edit Profile
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

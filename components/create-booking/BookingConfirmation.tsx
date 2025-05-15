@@ -3,20 +3,15 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  BookingDetails,
-  Session,
-  fetchSessions as fetchSessionsReal,
-} from '../lib/api';
-import { mockAPI } from '../lib/mockApi';
-import { onAuthStateChanged, User } from 'firebase/auth';
+  BookingDetails as BookingDetailsType,
+} from '../../lib/api';
 import { auth, db } from '@/app/firebase/config';
 import { doc, getDoc } from 'firebase/firestore';
+import { onAuthStateChanged, User } from 'firebase/auth';
 
 interface BookingConfirmationProps {
-  bookingDetails: BookingDetails;
+  bookingDetails: BookingDetailsType & { reference: string };
   onNewBooking: () => void;
-  sessions?: Session[];
-  useMock?: boolean;
 }
 
 interface UserProfile {
@@ -24,31 +19,22 @@ interface UserProfile {
   lastName?: string;
   email?: string;
   role?: string;
-  // Add other profile fields as needed
 }
 
 const BookingConfirmation: React.FC<BookingConfirmationProps> = ({
   bookingDetails,
   onNewBooking,
-  sessions: initialSessions,
-  useMock = false,
 }) => {
   const router = useRouter();
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
-  const [sessions, setSessions] = useState<Session[]>(initialSessions || []);
-  const [isLoadingSessions, setIsLoadingSessions] = useState(false);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLoadingProfile, setIsLoadingProfile] = useState(false);
 
-  const fetchSessions = useMock ? mockAPI.fetchSessions : fetchSessionsReal;
-
-  // Get the currently signed-in user's email and ID
+  // Get the currently signed-in user's ID
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
-      setUserEmail(user?.email ?? null);
       setUserId(user?.uid ?? null);
     });
     return () => unsubscribe();
@@ -58,22 +44,14 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (!userId) return;
-      
+
       setIsLoadingProfile(true);
       try {
         const docRef = doc(db, "users", userId);
         const docSnap = await getDoc(docRef);
-        
+
         if (docSnap.exists()) {
           setUserProfile(docSnap.data() as UserProfile);
-          
-          // Update booking details with profile information if needed
-          if (!bookingDetails.firstName && !bookingDetails.lastName) {
-            const profileData = docSnap.data() as UserProfile;
-            bookingDetails.firstName = profileData.firstName || '';
-            bookingDetails.lastName = profileData.lastName || '';
-            bookingDetails.email = profileData.email || bookingDetails.email;
-          }
         } else {
           console.log("No user profile found!");
         }
@@ -85,85 +63,13 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({
     };
 
     fetchUserProfile();
-  }, [userId, bookingDetails]);
-
-  // Fetch sessions once user email is known
-  useEffect(() => {
-    const loadSessions = async (): Promise<void> => {
-      if (!initialSessions && bookingDetails.tutorId && userEmail) {
-        setIsLoadingSessions(true);
-        try {
-          const fetchedSessions = await fetchSessions(bookingDetails.tutorId, userEmail);
-  
-          const mapStatus = (status: string): 'upcoming' | 'done' | 'cancelled' => {
-            switch (status.toLowerCase()) {
-              case 'scheduled':
-              case 'upcoming':
-                return 'upcoming';
-              case 'complete':
-              case 'done':
-                return 'done';
-              case 'cancelled':
-              case 'canceled':
-                return 'cancelled';
-              default:
-                return 'upcoming';
-            }
-          };
-  
-          const completeSessions: Session[] = fetchedSessions.map(session => ({
-            ...session,
-            tutorId: bookingDetails.tutorId,
-            isDone: false,
-            status: mapStatus(session.status)
-          }));
-  
-          setSessions(completeSessions);
-        } catch (error) {
-          console.error('Failed to fetch sessions:', error);
-        } finally {
-          setIsLoadingSessions(false);
-        }
-      }
-    };
-  
-  
-
-    loadSessions();
-  }, [bookingDetails.tutorId, userEmail, initialSessions, fetchSessions]);
-
-  // Add current booking as session if not already included
-  useEffect(() => {
-    if (bookingDetails && bookingDetails.reference) {
-      const sessionExists = sessions.some(
-        (session) => session.reference === bookingDetails.reference
-      );
-
-      if (!sessionExists) {
-        const newSession: Session = {
-          id: `new-${bookingDetails.reference}`,
-          tutorId: bookingDetails.tutorId,
-          date: bookingDetails.date,
-          time: bookingDetails.timeSlot,
-          isDone: false,
-          reference: bookingDetails.reference,
-          status: 'upcoming',
-          studentName: `${bookingDetails.firstName} ${bookingDetails.lastName}`,
-          subject: ''
-        };
-        setSessions((prev) => [newSession, ...prev]);
-      }
-    }
-  }, [bookingDetails, sessions]);
+  }, [userId]);
 
   const handleSendEmail = async (): Promise<void> => {
     try {
       setIsSendingEmail(true);
-
-      if (useMock) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-      }
-
+      // Simulate email sending
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setEmailSent(true);
     } catch (error) {
       console.error('Failed to send confirmation email:', error);
@@ -174,18 +80,6 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({
 
   const handleDashboard = (): void => {
     router.push('/dashboard');
-  };
-
-  const handleViewSessions = (): void => {
-    router.push('/sessions');
-  };
-
-  const handleViewProfile = (): void => {
-    if (userId) {
-      router.push(`/${userId}`);
-    } else {
-      router.push('/dashboard');
-    }
   };
 
   const formatDate = (dateString: string): string => {
@@ -225,6 +119,10 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({
                 <p className="text-sm text-gray-500">Time</p>
                 <p className="font-medium text-gray-800">{bookingDetails.timeSlot}</p>
               </div>
+              <div>
+                <p className="text-sm text-gray-500">Subject</p>
+                <p className="font-medium text-gray-800">{bookingDetails.subject}</p>
+              </div>
             </div>
           </div>
 
@@ -232,14 +130,6 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({
           <div className="bg-gray-50 p-6 rounded-md mb-6">
             <div className="flex justify-between items-center mb-4 border-b pb-2">
               <h3 className="text-lg font-semibold text-gray-800">Contact Information</h3>
-              {userProfile && (
-                <button 
-                  onClick={handleViewProfile}
-                  className="text-sm text-blue-600 hover:text-blue-800 font-medium"
-                >
-                  View Profile
-                </button>
-              )}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -266,30 +156,6 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({
               </div>
             )}
           </div>
-
-          {/* Sessions */}
-          {sessions && sessions.length > 0 && (
-            <div className="bg-blue-50 p-6 rounded-md mb-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 border-b border-blue-100 pb-2">
-                Your Upcoming Session
-              </h3>
-
-              {isLoadingSessions ? (
-                <div className="flex justify-center py-4">
-                  <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-blue-500"></div>
-                </div>
-              ) : (
-                <div>
-                  <div className="p-3 bg-white bg-opacity-80 rounded border border-blue-100">
-                    <p className="font-medium text-gray-800">
-                      {formatDate(bookingDetails.date)}, {bookingDetails.timeSlot}
-                    </p>
-                  </div>
-                  
-                </div>
-              )}
-            </div>
-          )}
 
           {/* Actions */}
           <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">

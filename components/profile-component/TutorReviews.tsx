@@ -10,7 +10,7 @@ interface Review {
   comment: string;
   rating: number;
   tuteeId: string;
-  timestamp: number;
+  timestamp: any; // Keep as 'any' to handle Firestore Timestamp
 }
 
 const StarRating = ({ rating }: { rating: number }) => (
@@ -26,16 +26,21 @@ const StarRating = ({ rating }: { rating: number }) => (
   </div>
 );
 
-const formatDate = (timestamp: number) => {
-  const date = new Date(timestamp);
-  return new Intl.DateTimeFormat('en-US', {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  }).format(date);
+const formatDate = (timestamp: any) => {
+  if (timestamp && typeof timestamp.toDate === 'function') {
+    const date = timestamp.toDate();
+    return new Intl.DateTimeFormat('en-US', {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    }).format(date);
+  } else {
+    console.error("Invalid timestamp format:", timestamp);
+    return 'Date unavailable';
+  }
 };
 
 interface TutorReviewsProps {
-  userId?: string; 
+  userId?: string;
 }
 
 export default function TutorReviews({ userId }: TutorReviewsProps) {

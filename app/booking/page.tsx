@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import BookingSystem from '@/components/BookingSystem';
-import Sidebar from '@/components/Sidebar';
+import BookingSystem from "@/components/create-booking/BookingSystem";
+import Sidebar from "@/components/Sidebar";
 
 export default function BookingPage() {
   return (

@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Sidebar from "../Sidebar";
-import { FaUserCircle } from "react-icons/fa";
 import TutorInfoSection from "./Profile-Tutor-Info";
 import TutorCourses from "./Tutor-Course-Section";
 import TutorReviews from "./TutorReviews";
@@ -19,12 +18,6 @@ const ProfileTutor: React.FC<ProfileTutorProps> = ({ userId }) => {
       <Sidebar />
       <div className="p-10 px-11 max-w-7xl mx-auto w-full">
         <div className="space-y-6">
-          <div className="flex justify-between items-start">
-            <div className="w-20 h-20 rounded-full overflow-hidden border border-gray-300 bg-gray-100 flex items-center justify-center">
-              <FaUserCircle className="text-gray-400 text-6xl" />
-            </div>  
-          </div>
-
           <div className="flex space-x-4 pt-4">
             <button
               onClick={() => setActiveSection("info")}
