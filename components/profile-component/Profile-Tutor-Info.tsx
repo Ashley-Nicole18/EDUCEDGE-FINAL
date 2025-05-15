@@ -142,9 +142,12 @@ const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
   const ProfileDisplay: React.FC<{ data: UpdateTutorInfo }> = ({ data }) => {
     return (
       <div className="space-y-6 pt-4">
-        <div className="mb-4 p-4 border rounded-md shadow-sm">
+        <div className="mb-2 p-4 border rounded-md shadow-sm">
           <h2 className="text-lg font-semibold text-gray-800 mb-2">Personal Information</h2>
-          <p className="text-gray-700 text-sm"><span className="font-semibold">Name:</span> {data.firstName} {data.lastName}</p>
+          <div>
+            <p className="text-gray-500 text-sm">Name</p>
+            <p className="text-gray-700">{data.firstName} {data.lastName}</p>
+          </div>
         </div>
 
         <div className="mb-4 p-4 border rounded-md shadow-sm">
@@ -196,12 +199,12 @@ const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name <span className="text-red-500">*</span></label>
-                <input type="text" id="firstName" name="firstName" value={formData.firstName || ""} onChange={handleChange} className="mt-1 block w-full border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+                <input type="text" id="firstName" name="firstName" value={formData.firstName || ""} onChange={handleChange} className="mt-1 block w-full border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-black" />
                 {errors.firstName && <p className="text-red-600 text-xs mt-1">{errors.firstName}</p>}
               </div>
               <div>
                 <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Last Name <span className="text-red-500">*</span></label>
-                <input type="text" id="lastName" name="lastName" value={formData.lastName || ""} onChange={handleChange} className="mt-1 block w-full border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+                <input type="text" id="lastName" name="lastName" value={formData.lastName || ""} onChange={handleChange} className="mt-1 block w-full border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-black" />
                 {errors.lastName && <p className="text-red-600 text-xs mt-1">{errors.lastName}</p>}
               </div>
             </div>
@@ -212,17 +215,17 @@ const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label htmlFor="college" className="block text-sm font-medium text-gray-700">College <span className="text-red-500">*</span></label>
-                <input type="text" id="college" name="college" value={formData.college || ""} onChange={handleChange} className="mt-1 block w-full border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+                <input type="text" id="college" name="college" value={formData.college || ""} onChange={handleChange} className="mt-1 block w-full border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-black" />
                 {errors.college && <p className="text-red-600 text-xs mt-1">{errors.college}</p>}
               </div>
               <div>
                 <label htmlFor="courseYear" className="block text-sm font-medium text-gray-700">Course & Year <span className="text-red-500">*</span></label>
-                <input type="text" id="courseYear" name="courseYear" value={formData.courseYear || ""} onChange={handleChange} className="mt-1 block w-full border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+                <input type="text" id="courseYear" name="courseYear" value={formData.courseYear || ""} onChange={handleChange} className="mt-1 block w-full border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-black" />
                 {errors.courseYear && <p className="text-red-600 text-xs mt-1">{errors.courseYear}</p>}
               </div>
               <div>
                 <label htmlFor="schoolEmail" className="block text-sm font-medium text-gray-700">School Email <span className="text-red-500">*</span></label>
-                <input type="email" id="schoolEmail" name="schoolEmail" value={formData.schoolEmail || ""} onChange={handleChange} className="mt-1 block w-full border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+                <input type="email" id="schoolEmail" name="schoolEmail" value={formData.schoolEmail || ""} onChange={handleChange} className="mt-1 block w-full border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-black" />
                 {errors.schoolEmail && <p className="text-red-600 text-xs mt-1">{errors.schoolEmail}</p>}
               </div>
             </div>
@@ -232,7 +235,7 @@ const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
             <h3 className="text-lg font-semibold text-gray-700 mb-2">Credentials</h3>
             <div>
               <label htmlFor="achievements" className="block text-sm font-medium text-gray-700">Achievements <span className="text-red-500">*</span></label>
-              <textarea id="achievements" name="achievements" value={formData.achievements || ""} onChange={handleChange} className="mt-1 block w-full border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm resize-none h-24" placeholder="Enter achievements (e.g., Graduated with honors in Senior High School)"></textarea>
+              <textarea id="achievements" name="achievements" value={formData.achievements || ""} onChange={handleChange} className="mt-1 block w-full border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm resize-none h-24 text-black" placeholder="Enter achievements (e.g., Graduated with honors in Senior High School)"></textarea>
               {errors.achievements && <p className="text-red-600 text-xs mt-1">{errors.achievements}</p>}
             </div>
           </div>

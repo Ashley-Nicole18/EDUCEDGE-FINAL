@@ -17,7 +17,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ userId }) => {
   return (
     <div className="relative h-screen flex">
       <Sidebar />
-      <div className="p-10 px-11 max-w-7xl mx-auto w-full">
+      <div className="p-1 px-1 max-w-7xl mx-auto w-full">
         <div className="space-y-6">
           <div className="flex justify-between items-start">
             <div className="w-20 h-20 rounded-full overflow-hidden border border-gray-300 bg-gray-100 flex items-center justify-center">
@@ -59,7 +59,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ userId }) => {
           </div>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-2">
           {activeSection === "info" && (
             <TutorInfoSection userId={userId} />
           )}
