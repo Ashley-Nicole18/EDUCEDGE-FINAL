@@ -8,21 +8,25 @@ import Sidebar from "../Sidebar";
 import { db } from "@/app/firebase/config";
 import { collection, query, where, getDocs } from "firebase/firestore";
 
+
 interface Tutor {
   id: string;
-  name: string
+  name: string;
 }
 
+// Component to render each tutor card
 const TutorCard: React.FC<Tutor> = ({ id, name }) => {
   return (
     <div className="tutor-card border rounded-xl shadow-md p-4 bg-white">
+      {/* Profile icon placeholder */}
       <div className="tutor-image flex justify-center items-center h-32 bg-blue-50 rounded-md mb-4">
         <UserCircleIcon className="h-16 w-16 text-blue-400" />
       </div>
+      {/* Tutor name and link to profile */}
       <div className="tutor-info text-center">
         <div className="tutor-name text-lg font-semibold text-gray-800 mb-1">{name}</div>
         <Link
-          href={`/profile/${id}`}
+          href={`/profile/${id}`} // Dynamic route to tutor profile
           className="inline-block bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition"
           aria-label={`View profile of ${name}`}
         >
@@ -33,48 +37,58 @@ const TutorCard: React.FC<Tutor> = ({ id, name }) => {
   );
 };
 
+// Main dashboard component for tutees
 const TuteeDashboard: React.FC = () => {
-  const [allTutors, setAllTutors] = useState<Tutor[]>([]);
-  const [filteredTutors, setFilteredTutors] = useState<Tutor[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
+  // State variables
+  const [allTutors, setAllTutors] = useState<Tutor[]>([]); // all fetched tutors
+  const [filteredTutors, setFilteredTutors] = useState<Tutor[]>([]); // tutors filtered by search
+  const [loading, setLoading] = useState(true); // loading state
+  const [error, setError] = useState<string | null>(null); // error state
+  const [searchQuery, setSearchQuery] = useState(""); // search input value
 
+  // Fetch tutor data from Firebase Firestore
   useEffect(() => {
     const fetchTutors = async () => {
-      setLoading(true);
-      setError(null);
+      setLoading(true); // start loading
+      setError(null);   // reset error state
       try {
+        // Query Firestore for users with role 'tutor'
         const tutorsQuery = query(collection(db, "users"), where("role", "==", "tutor"));
         const querySnapshot = await getDocs(tutorsQuery);
+
         const fetchedTutors: Tutor[] = [];
         querySnapshot.forEach((doc) => {
+          // Extract data and store it in fetchedTutors array
           fetchedTutors.push({ id: doc.id, ...doc.data() } as Tutor);
         });
-        setAllTutors(fetchedTutors);
-        setFilteredTutors(fetchedTutors);
 
-        console.log(fetchedTutors)
+        // Save to state
+        setAllTutors(fetchedTutors);
+        setFilteredTutors(fetchedTutors); // default to all tutors
+
+        console.log(fetchedTutors); // Debug
       } catch (e: unknown) {
         console.error("Error fetching tutors:", e);
         setError("Failed to load tutors. Please try again later.");
       } finally {
-        setLoading(false);
+        setLoading(false); // stop loading
       }
     };
 
-    fetchTutors();
+    fetchTutors(); // Run the fetch function when component mounts
   }, []);
 
+  // Handle typing in the search input
   const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
+    // Filter tutors based on lowercase name match
     const filtered = allTutors.filter((tutor) =>
       tutor.name.toLowerCase().includes(event.target.value.toLowerCase())
     );
     setFilteredTutors(filtered);
   };
 
-
+  // Show loading state
   if (loading) {
     return (
       <div className="flex">
@@ -86,6 +100,7 @@ const TuteeDashboard: React.FC = () => {
     );
   }
 
+  // Show error state
   if (error) {
     return (
       <div className="flex">
@@ -107,10 +122,12 @@ const TuteeDashboard: React.FC = () => {
       <div className="flex">
         <Sidebar />
         <div className="flex-1 dashboard p-8 ml-[250px]">
+          {/* Header */}
           <div className="header mb-8">
             <h1 className="text-2xl font-bold text-blue-600">Find Your Tutor</h1>
           </div>
 
+          {/* Welcome message */}
           <div className="welcome-section bg-white p-6 rounded-lg shadow-md mb-8">
             <h2 className="text-xl font-semibold text-gray-800">Welcome!</h2>
             <p className="text-gray-600">
@@ -118,6 +135,7 @@ const TuteeDashboard: React.FC = () => {
             </p>
           </div>
 
+          {/* Search bar */}
           <div className="search-section mb-8">
             <div className="search-bar flex">
               <input
@@ -138,6 +156,7 @@ const TuteeDashboard: React.FC = () => {
             </div>
           </div>
 
+          {/* Display tutor cards */}
           <div className="tutors-section">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Available Tutors</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -148,6 +167,7 @@ const TuteeDashboard: React.FC = () => {
                   name={tutor.name}
                 />
               ))}
+              {/* No results message */}
               {filteredTutors.length === 0 && (
                 <p className="text-gray-600">No tutors found matching your search.</p>
               )}

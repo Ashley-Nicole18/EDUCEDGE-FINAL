@@ -333,7 +333,7 @@ const TutorCourses: React.FC<ManageCoursesProps> = ({ userId }) => {
 
       {/* Booking Modal */}
       {showBookingModal && selectedTutorIdForBooking && (
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div className="fixed top-0 left-0 w-screen h-screen bg-white overflow-auto flex justify-center items-center z-50">
           <div className="bg-white rounded-md p-6 relative">
             <button
               onClick={closeBookingModal}
@@ -343,7 +343,7 @@ const TutorCourses: React.FC<ManageCoursesProps> = ({ userId }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <h2 className="text-xl font-semibold mb-4">Book Your Session</h2>
+            <h2 className="text-xl font-semibold text-black mb-4">Book Your Session</h2>
             <BookingSystem tutorId={selectedTutorIdForBooking} initialSubject={bookingSubject} />
           </div>
         </div>
