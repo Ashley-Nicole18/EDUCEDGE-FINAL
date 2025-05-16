@@ -64,6 +64,7 @@ export default function SignUpPage() {
   const handleGoogleSignup = async () => {
     const provider = new GoogleAuthProvider();
     try {
+      // verify google account domain
       const result = await signInWithPopup(auth, provider);
       if (!result.user.email?.endsWith('@cpu.edu.ph')) {
         await auth.signOut();
