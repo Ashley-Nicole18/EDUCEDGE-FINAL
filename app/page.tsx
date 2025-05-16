@@ -1,29 +1,33 @@
-'use client';
+'use client'; // Next.js directive marking this as a Client Component
 
-import Image from "next/image";
-import {useRouter} from 'next/navigation';
-
+// Next.js imports
+import Image from "next/image"; // Optimized image component
+import { useRouter } from 'next/navigation'; // Navigation router
 
 export default function LandingPage() {
-  const router = useRouter();
+  const router = useRouter(); // Initialize router for navigation
 
   return (
+    // Main container with responsive minimum height
     <div className="min-h-screen font-sans flex flex-col relative overflow-auto">
-      {/* Background */}
+      {/* ==================== BACKGROUND SECTION ==================== */}
       <div className="fixed inset-0 -z-10">
+        {/* Full-screen background image */}
         <Image
           src="/img/bglanding.png"
           alt="Educational background"
-          fill
-          className="object-cover"
-          priority
-          quality={100}
+          fill // Fills the entire container
+          className="object-cover" // Ensures image covers the area
+          priority // Prioritizes loading this image
+          quality={100} // Highest image quality
         />
+        {/* Gradient overlay with blur effect */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/90 backdrop-blur-sm"></div>
       </div>
 
-      {/* Header */}
+      {/* ==================== HEADER SECTION ==================== */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-sm py-3 px-6 sm:px-12 flex items-center justify-between h-16 border-b border-gray-100">
+        {/* Logo with hover effect */}
         <Image
           src="/img/EDUCEDGE.png"
           alt="EducEdge logo"
@@ -33,8 +37,9 @@ export default function LandingPage() {
         />
       </header>
 
-      {/* Hero Section */}
+      {/* ==================== MAIN CONTENT SECTION ==================== */}
       <main className="flex-grow pt-28 pb-16 px-6 sm:px-12 flex flex-col items-center space-y-20 z-10">
+        {/* Hero text section */}
         <section className="text-center space-y-6">
           <h1 className="text-4xl font-bold text-gray-900">Welcome to EducEdge</h1>
           <p className="text-lg text-gray-700 max-w-xl mx-auto">
@@ -42,21 +47,26 @@ export default function LandingPage() {
           </p>
         </section>
 
+        {/* Featured card with animation */}
         <section className="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-8 sm:p-12 max-w-2xl w-full text-center transform hover:scale-[1.01] transition-all duration-500">
           <div className="animate-float">
+            {/* Gradient heading */}
             <h2 className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent">
               Transform Your Learning Experience
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 mb-8">
               Personalized education tools designed to help you achieve your academic goals faster and smarter.
             </p>
+            {/* Action buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              {/* Primary CTA button */}
               <button
                 onClick={() => router.push('/sign-in')}
                 className="px-8 py-4 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow-lg hover:scale-105 transition-all"
               >
                 Get Started
               </button>
+              {/* Secondary CTA button */}
               <button
                 onClick={() => router.push('/sign-up')}
                 className="px-8 py-4 rounded-full border-2 border-blue-500 text-blue-600 font-semibold shadow-lg hover:scale-105 transition-all"
@@ -68,16 +78,39 @@ export default function LandingPage() {
         </section>
       </main>
 
-      {/* Footer */}
+      {/* ==================== FOOTER SECTION ==================== */}
       <footer className="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-12 w-full z-10">
         <div className="container mx-auto px-6">
+          {/* Grid layout for footer content */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {/* Add links/info for each footer column */}
-            <div><h3 className="text-lg font-bold mb-2">About</h3><p>EducEdge is a smart tutoring platform.</p></div>
-            <div><h3 className="text-lg font-bold mb-2">Links</h3><ul><li><a href="#features">Features</a></li></ul></div>
-            <div><h3 className="text-lg font-bold mb-2">Support</h3><p>Contact us at support@educedge.com</p></div>
-            <div><h3 className="text-lg font-bold mb-2">Social</h3><p>Follow us on social media</p></div>
+            {/* About section */}
+            <div>
+              <h3 className="text-lg font-bold mb-2">About</h3>
+              <p>EducEdge is a smart tutoring platform.</p>
+            </div>
+            
+            {/* Links section */}
+            <div>
+              <h3 className="text-lg font-bold mb-2">Links</h3>
+              <ul>
+                <li><a href="#features">Features</a></li>
+              </ul>
+            </div>
+            
+            {/* Support section */}
+            <div>
+              <h3 className="text-lg font-bold mb-2">Support</h3>
+              <p>Contact us at support@educedge.com</p>
+            </div>
+            
+            {/* Social media section */}
+            <div>
+              <h3 className="text-lg font-bold mb-2">Social</h3>
+              <p>Follow us on social media</p>
+            </div>
           </div>
+          
+          {/* Copyright notice */}
           <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
             <p>© 2025 EducEdge. All rights reserved.</p>
           </div>
