@@ -38,7 +38,7 @@ const Sidebar: React.FC = () => {
   const links = [
     { href: `/profile/${user?.uid}`, label: "Profile", Icon: UserCircleIcon },
     { href: "/dashboard", label: "Dashboard", Icon: HomeIcon },
-    { href: "/booking", label: "Booking", Icon: CalendarIcon },
+    { href: "/session", label: "Sessions", Icon: CalendarIcon },
     {
       label: "Sign Out",
       Icon: ArrowRightOnRectangleIcon,

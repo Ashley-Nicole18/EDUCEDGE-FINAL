@@ -11,7 +11,6 @@ export interface Session {
   studentName: string;
 }
 
-
 export interface BookingRequest {
   tutorId: string;
   date: string;
@@ -31,13 +30,19 @@ export interface BookingDetails extends BookingRequest {
 // Real API functions
 
 /**
- * Fetch all sessions for a specific tutor.
+ * Fetch all sessions for a specific tutor, optionally filtered by student email.
  * @param tutorId - The ID of the tutor.
+ * @param studentEmail - Optional email address to filter sessions by student.
  * @returns A list of sessions for the tutor.
  */
-export async function fetchSessions(tutorId: string): Promise<Session[]> {
+export async function fetchSessions(tutorId: string, studentEmail?: string): Promise<Session[]> {
   try {
-    const response = await fetch(`/api/sessions?tutorId=${tutorId}`);
+    const queryParams = new URLSearchParams({ tutorId });
+    if (studentEmail) {
+      queryParams.append('studentEmail', studentEmail);
+    }
+
+    const response = await fetch(`/api/sessions?${queryParams.toString()}`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch sessions: ${response.statusText}`);
@@ -144,102 +149,100 @@ export async function cancelBooking(bookingReference: string): Promise<{ success
   } catch (error) {
     console.error('Failed to cancel booking:', error);
     throw error;
+  }
 }
-}
-
-// Additional functions for marking session done and cancelling session (from the first snippet)
 
 /**
-* Mark a specific session as done.
-* @param sessionId - The ID of the session to mark as done.
-* @returns Void.
-*/
+ * Mark a specific session as done.
+ * @param sessionId - The ID of the session to mark as done.
+ * @returns Void.
+ */
 export async function markSessionAsDone(sessionId: string): Promise<void> {
-try {
-const response = await fetch(`/api/sessions/${sessionId}/done`, {
-  method: 'PATCH',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+  try {
+    const response = await fetch(`/api/sessions/${sessionId}/done`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
-if (!response.ok) {
-  throw new Error(`Failed to mark session as done: ${response.statusText}`);
-}
-} catch (error) {
-console.error('Error in markSessionAsDone:', error);
-throw new Error(`Failed to mark session as done: ${error instanceof Error ? error.message : 'Unknown error'}`);
-}
+    if (!response.ok) {
+      throw new Error(`Failed to mark session as done: ${response.statusText}`);
+    }
+  } catch (error) {
+    console.error('Error in markSessionAsDone:', error);
+    throw new Error(`Failed to mark session as done: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
 }
 
 /**
-* Cancel a specific session.
-* @param sessionId - The ID of the session to cancel.
-* @returns Void.
-*/
+ * Cancel a specific session.
+ * @param sessionId - The ID of the session to cancel.
+ * @returns Void.
+ */
 export async function cancelSession(sessionId: string): Promise<void> {
-try {
-const response = await fetch(`/api/sessions/${sessionId}`, {
-  method: 'DELETE',
-});
+  try {
+    const response = await fetch(`/api/sessions/${sessionId}`, {
+      method: 'DELETE',
+    });
 
-if (!response.ok) {
-  throw new Error(`Failed to cancel session: ${response.statusText}`);
-}
-} catch (error) {
-console.error('Error in cancelSession:', error);
-throw new Error(`Failed to cancel session: ${error instanceof Error ? error.message : 'Unknown error'}`);
-}
+    if (!response.ok) {
+      throw new Error(`Failed to cancel session: ${response.statusText}`);
+    }
+  } catch (error) {
+    console.error('Error in cancelSession:', error);
+    throw new Error(`Failed to cancel session: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
 }
 
 // Optional: Mock API implementations for development/testing purposes
 
 export const mockAPI = {
-fetchAvailableDates: async (tutorId: string): Promise<string[]> => {
-await new Promise(resolve => setTimeout(resolve, 800));
+  fetchAvailableDates: async (tutorId: string): Promise<string[]> => {
+    await new Promise(resolve => setTimeout(resolve, 800));
 
-const dates: string[] = [];
-const today = new Date();
+    const dates: string[] = [];
+    const today = new Date();
 
-for (let i = 1; i <= 30; i++) {
-  if (Math.random() > 0.3) {
-    const date = new Date(today);
-    date.setDate(today.getDate() + i);
-    dates.push(date.toISOString().split('T')[0]);
-  }
-}
+    for (let i = 1; i <= 30; i++) {
+      if (Math.random() > 0.3) {
+        const date = new Date(today);
+        date.setDate(today.getDate() + i);
+        dates.push(date.toISOString().split('T')[0]);
+      }
+    }
 
-return dates;
-},
+    return dates;
+  },
 
-fetchAvailableSlots: async (tutorId: string, date: string): Promise<string[]> => {
-await new Promise(resolve => setTimeout(resolve, 600));
+  fetchAvailableSlots: async (tutorId: string, date: string): Promise<string[]> => {
+    await new Promise(resolve => setTimeout(resolve, 600));
 
-const timeSlots = [
-  '09:00 AM', '10:00 AM', '11:00 AM', 
-  '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM'
-];
+    const timeSlots = [
+      '09:00 AM', '10:00 AM', '11:00 AM',
+      '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM'
+    ];
 
-return timeSlots.filter(() => Math.random() > 0.3);
-},
+    return timeSlots.filter(() => Math.random() > 0.3);
+  },
 
-createBooking: async (bookingRequest: BookingRequest): Promise<BookingDetails> => {
-await new Promise(resolve => setTimeout(resolve, 1200));
+  createBooking: async (bookingRequest: BookingRequest): Promise<BookingDetails> => {
+    await new Promise(resolve => setTimeout(resolve, 1200));
 
-const reference = `BK-${Math.floor(100000 + Math.random() * 900000)}`;
+    const reference = `BK-${Math.floor(100000 + Math.random() * 900000)}`;
 
-return {
-  ...bookingRequest,
-  reference,
-};
-},
+    return {
+      ...bookingRequest,
+      reference,
+    };
+  },
 
-cancelBooking: async (bookingReference: string): Promise<{ success: boolean; message: string }> => {
-await new Promise(resolve => setTimeout(resolve, 800));
+  cancelBooking: async (bookingReference: string): Promise<{ success: boolean; message: string }> => {
+    await new Promise(resolve => setTimeout(resolve, 800));
 
-return {
-  success: true,
-  message: `Booking ${bookingReference} has been successfully canceled`,
-};
-},
+    return {
+      success: true,
+      message: `Booking ${bookingReference} has been successfully canceled`,
+    };
+  },
 };

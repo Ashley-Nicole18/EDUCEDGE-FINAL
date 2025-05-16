@@ -2,29 +2,22 @@
 
 import React, { useState } from "react";
 import Sidebar from "../Sidebar";
-import { FaUserCircle } from "react-icons/fa";
 import TutorInfoSection from "./Profile-Tutor-Info";
 import TutorCourses from "./Tutor-Course-Section";
 import TutorReviews from "./TutorReviews";
 
-interface ProfileHeaderProps {
+interface ProfileTutorProps {
   userId: string;
 }
 
-const ProfileHeader: React.FC<ProfileHeaderProps> = ({ userId }) => {
+const ProfileTutor: React.FC<ProfileTutorProps> = ({ userId }) => {
   const [activeSection, setActiveSection] = useState<"info" | "courses" | "reviews">("info");
 
   return (
     <div className="relative h-screen flex">
       <Sidebar />
-      <div className="p-1 px-1 max-w-7xl mx-auto w-full">
+      <div className="p-10 px-11 max-w-7xl mx-auto w-full">
         <div className="space-y-6">
-          <div className="flex justify-between items-start">
-            <div className="w-20 h-20 rounded-full overflow-hidden border border-gray-300 bg-gray-100 flex items-center justify-center">
-              <FaUserCircle className="text-gray-400 text-6xl" />
-            </div>
-          </div>
-
           <div className="flex space-x-4 pt-4">
             <button
               onClick={() => setActiveSection("info")}
@@ -59,7 +52,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ userId }) => {
           </div>
         </div>
 
-        <div className="mt-2">
+        <div className="mt-8">
           {activeSection === "info" && (
             <TutorInfoSection userId={userId} />
           )}
@@ -79,4 +72,4 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ userId }) => {
   );
 };
 
-export default ProfileHeader;
+export default ProfileTutor;
