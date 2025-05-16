@@ -1,39 +1,47 @@
-'use client';
+'use client'; // Marks this as a Client Component in Next.js 13+
 
+// Import necessary libraries and components
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
   AuthError,
-} from 'firebase/auth';
-import { useState } from 'react';
-import { auth } from '@/app/firebase/config';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+} from 'firebase/auth'; // Firebase auth methods
+import { useState } from 'react'; // React state hook
+import { auth } from '@/app/firebase/config'; // Firebase configuration
+import Image from 'next/image'; // Next.js optimized image component
+import { useRouter } from 'next/navigation'; // Next.js router
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Eye icons for password toggle
 
 export default function SignUpPage() {
+  // Initialize router for navigation
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [showPassword, setShowPassword] = useState(false);
+  
+  // State management for form fields and UI
+  const [email, setEmail] = useState(''); // Email input
+  const [password, setPassword] = useState(''); // Password input
+  const [confirmPassword, setConfirmPassword] = useState(''); // Confirm password
+  const [error, setError] = useState<string>(''); // Error messages
+  const [loading, setLoading] = useState<boolean>(false); // Loading state
+  const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
 
+  // Validate email format (must be CPU domain)
   const validateEmail = (email: string) => {
     return email.endsWith('@cpu.edu.ph');
   };
 
+  // Handle email/password signup
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
 
+    // Validate CPU email
     if (!validateEmail(email)) {
       setError('Please use a valid CPU email address (@cpu.edu.ph)');
       return;
     }
 
+    // Check password match
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
       return;
@@ -42,9 +50,12 @@ export default function SignUpPage() {
     setLoading(true);
 
     try {
+      // Firebase email/password signup
       await createUserWithEmailAndPassword(auth, email, password);
+      // Redirect after successful signup
       router.push('/role-selection');
     } catch (e) {
+      // Handle specific Firebase errors
       const error = e as AuthError;
       switch (error.code) {
         case 'auth/email-already-in-use':
@@ -61,10 +72,13 @@ export default function SignUpPage() {
     }
   };
 
+  // Handle Google OAuth signup
   const handleGoogleSignup = async () => {
     const provider = new GoogleAuthProvider();
     try {
+      // Sign in with Google popup
       const result = await signInWithPopup(auth, provider);
+      // Verify Google account has CPU domain
       if (!result.user.email?.endsWith('@cpu.edu.ph')) {
         await auth.signOut();
         setError('Please use a CPU Google account (@cpu.edu.ph)');
@@ -77,9 +91,10 @@ export default function SignUpPage() {
     }
   };
 
+  // Component UI Rendering
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 h-screen">
-      {/* Left Side: Blurred Background */}
+      {/* Left Side: Decorative Background Image */}
       <div className="relative hidden md:block">
         <Image
           src="/img/bg.png"
@@ -91,10 +106,11 @@ export default function SignUpPage() {
         <div className="absolute inset-0 bg-black/30" />
       </div>
 
-      {/* Right Side: Sign-Up Form with background */}
+      {/* Right Side: Sign-Up Form */}
       <div className="flex items-center justify-center bg-white md:px-10">
         <div className="w-full max-w-md ">
           <div className="flex flex-col items-center mb-5">
+            {/* Application Logo */}
             <Image
               src="/img/logomain.jpg"
               alt="EducEdge Logo"
@@ -106,13 +122,16 @@ export default function SignUpPage() {
 
             <h2 className="text-3xl font-bold text-gray-800">Create Account</h2>
 
+            {/* Sign-Up Form */}
             <form onSubmit={handleSignup} className="w-full space-y-6">
+              {/* Error Message Display */}
               {error && (
                 <div className="text-red-500 text-center p-3 rounded-lg bg-red-50">
                   {error}
                 </div>
               )}
 
+              {/* Email Input Field */}
               <div className="space-y-2">
                 <label className="block text-lg font-medium text-gray-700">Email</label>
                 <input
@@ -125,6 +144,7 @@ export default function SignUpPage() {
                 />
               </div>
 
+              {/* Password Input Field with Toggle */}
               <div className="space-y-2">
                 <label className="block text-lg font-medium text-gray-700">Password</label>
                 <div className="relative">
@@ -147,6 +167,7 @@ export default function SignUpPage() {
                 </div>
               </div>
 
+              {/* Confirm Password Field */}
               <div className="space-y-2">
                 <label className="block text-lg font-medium text-gray-700">Confirm Password</label>
                 <div className="relative">
@@ -169,6 +190,7 @@ export default function SignUpPage() {
                 </div>
               </div>
 
+              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={loading}
@@ -180,12 +202,14 @@ export default function SignUpPage() {
               </button>
             </form>
 
+            {/* Divider with OR text */}
             <div className="w-full flex items-center my-4">
               <div className="flex-grow border-t border-gray-200"></div>
               <span className="mx-4 text-gray-400">OR</span>
               <div className="flex-grow border-t border-gray-200"></div>
             </div>
 
+            {/* Google Sign-Up Button */}
             <button
               onClick={handleGoogleSignup}
               className="w-full flex items-center justify-center gap-3 p-4 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium"
@@ -194,6 +218,7 @@ export default function SignUpPage() {
               <span>Sign up with Google</span>
             </button>
 
+            {/* Sign-In Redirect */}
             <div className="text-center mt-4">
               <p className="text-gray-600">
                 Already have an account?{' '}
