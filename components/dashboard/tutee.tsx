@@ -122,7 +122,7 @@ const TuteeDashboard: React.FC = () => {
             <div className="search-bar flex">
               <input
                 type="text"
-                className="flex-1 p-4 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 p-4 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                 placeholder="Search for tutors or subjects..."
                 value={searchQuery}
                 onChange={handleSearchInputChange}
