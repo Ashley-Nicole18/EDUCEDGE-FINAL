@@ -22,8 +22,9 @@ interface TutorInfoSectionProps {
 }
 
 const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState<UpdateTutorInfo>({
+  // Edit state, form fields, error handling, and role-based access
+  const [isEditing, setIsEditing] = useState(false); 
+  const [formData, setFormData] = useState<UpdateTutorInfo>({ 
     firstName: "",
     lastName: "",
     college: "",
@@ -31,13 +32,14 @@ const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
     schoolEmail: "",
     achievements: "",
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [hasProfileData, setHasProfileData] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});  
+  const [hasProfileData, setHasProfileData] = useState(false); 
+  const [loading, setLoading] = useState(false); 
   const [error, setError] = useState<string | null>(null);
   const [profileRole, setProfileRole] = useState<string | null>(null);
   const [currentUserUid, setCurrentUserUid] = useState<string | null>(null);
 
+  // Fetches user profile from Firestore when userId changes.
   useEffect(() => {
     const fetchTutorInfo = async () => {
       if (userId) {
@@ -45,7 +47,7 @@ const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
         setError(null);
         const userDocRef = doc(db, "users", userId);
         try {
-          const docSnap = await getDoc(userDocRef);
+          const docSnap = await getDoc(userDocRef); // fetch profile data using getdoc
           if (docSnap.exists()) {
             const data = docSnap.data() as TutorInfo;
             setFormData({
@@ -57,25 +59,25 @@ const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
               achievements: data.achievements || "",
             });
             setHasProfileData(true);
-            setProfileRole(data.role || null);
+            setProfileRole(data.role || null); //Saves the user role into profileRole.
           } else {
             setHasProfileData(false);
           }
-        } catch (e: unknown) {
+        } catch (e: unknown) { //catch any throw error safely
           if (e instanceof Error) {
             setError(`Failed to load profile: ${e.message}`);
           } else {
-            setError("Failed to load profile due to an unknown error.");
+            setError("Failed to load profile due to an unknown error."); 
           }
         } finally {
-          setLoading(false);
+          setLoading(false); //stop loading
         }
       }
     };
 
     fetchTutorInfo();
 
-
+    // detect current login user UID
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setCurrentUserUid(user.uid);
@@ -91,9 +93,9 @@ const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: value });//na update ya ang form field when any field is edited
   };
-
+//validation form to ensure required fields are filled
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
     if (!formData.firstName) newErrors.firstName = "First Name is required.";
@@ -108,22 +110,22 @@ const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
     }
     if (!formData.achievements)
       newErrors.achievements = "Achievements are required.";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    setErrors(newErrors); //error if mayara empty field
+    return Object.keys(newErrors).length === 0; //return sya true if valid
   };
-
+//prevents default form behavior
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (userId) {
-      if (validateForm()) {
+      if (validateForm()) { 
         setLoading(true);
         setError(null);
         const userDocRef = doc(db, "users", userId);
         try {
-          await updateDoc(userDocRef, formData);
+          await updateDoc(userDocRef, formData); //Sends updated formData to Firestore using updateDoc
           setHasProfileData(true);
           setIsEditing(false);
-          alert("Profile updated successfully!");
+          alert("Profile updated successfully!"); 
         } catch (e: unknown) {
           if (e instanceof Error) {
             setError(`Failed to update profile: ${e.message}`);
@@ -138,12 +140,14 @@ const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
       alert("User ID not available. Cannot save profile.");
     }
   };
-
+//if there is no profile data exists, the form is shown. Otherwise profile display is rendered read-only 
   const ProfileDisplay: React.FC<{ data: UpdateTutorInfo }> = ({ data }) => {
     return (
+
+      //personal info section display
       <div className="space-y-6 pt-4">
         <div className="mb-2 p-4 border rounded-md shadow-sm">
-          <h2 className="text-lg font-semibold text-gray-800 mb-2">Personal Information</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-2">Personal Information</h2> 
           <div>
             <p className="text-gray-500 text-sm">Name</p>
             <p className="text-gray-700">{data.firstName} {data.lastName}</p>
@@ -190,6 +194,7 @@ const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
   }
 
   return (
+    //edit section
     <div className="bg-white rounded-md shadow-md p-6">
       {isEditing || !hasProfileData ? (
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -250,9 +255,10 @@ const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
           </div>
         </form>
       ) : (
-        <>
+        //this one ensure that no one can open the form unless they are the tutor who owns that profile
+        <> 
           <ProfileDisplay data={formData} />
-          {profileRole === 'tutor' && currentUserUid === userId && (
+          {profileRole === 'tutor' && currentUserUid === userId && ( 
             <div className="mt-6 flex justify-end">
               <button
                 onClick={() => setIsEditing(true)}
@@ -262,7 +268,7 @@ const TutorInfoSection: React.FC<TutorInfoSectionProps> = ({ userId }) => {
               </button>
             </div>
           )}
-        </>
+        </> 
       )}
     </div>
   );
